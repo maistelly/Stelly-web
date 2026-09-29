@@ -1011,7 +1011,7 @@ function renderProjectedRow(item) {
       <span class="task-check" style="border-style:dashed;"></span>
       <div class="item-mid">
         <p class="name">${esc(item.name)}</p>
-        <p class="meta">Previsto · ${fmtDate(due)} · ${rec.toLowerCase()}</p>
+        <p class="meta">Previsto · ${fmtDate(due)}${item.due_time ? ' · ' + item.due_time.slice(0, 5) : ''} · ${rec.toLowerCase()}</p>
       </div>
     </div>`;
   }
@@ -1347,6 +1347,7 @@ function renderItemRow(item) {
     else if (u.daysLeft === 0) when = 'Hoy';
     else if (u.daysLeft === 1) when = 'Mañana';
     else when = 'En ' + u.daysLeft + ' días · ' + fmtDate(u.due);
+    if (item.due_time && !item.paid) when += ' · ' + item.due_time.slice(0, 5);
     const rec = RECURRENCE_LABEL[item.recurrence] ? ' · se repite ' + RECURRENCE_LABEL[item.recurrence] : '';
     const metaColor = (item.paid || u.level === 'green') ? 'var(--muted)' : ink;
     return `
@@ -1392,6 +1393,7 @@ function renderModal() {
   const nameVal = isEdit ? it.name : '';
   const amountVal = isEdit && it.amount != null ? String(it.amount).replace('.', ',') : '';
   const dateVal = isEdit ? it.due_date : defaultDate();
+  const timeVal = isEdit && it.due_time ? it.due_time.slice(0, 5) : '';
   const recurrenceVal = isEdit ? it.recurrence : (isTask ? 'no' : 'mes');
   const waChecked = isEdit ? it.notify_whatsapp : true;
   const mailChecked = isEdit ? it.notify_mail : true;
@@ -1400,9 +1402,12 @@ function renderModal() {
     <div class="modal-box" onclick="event.stopPropagation()">
       <p class="modal-title">${isEdit ? 'Editar' : (isTask ? 'Nuevo recordatorio' : 'Añadir nuevo')}</p>
       <div class="field"><label class="field-label">Nombre</label><input id="new-name" type="text" placeholder="${isTask ? 'Cita médica, renovar el DNI...' : 'Spotify, alquiler, IVA...'}" value="${esc(nameVal)}"></div>
-      <div class="row2" ${isTask ? 'style="grid-template-columns:1fr;"' : ''}>
-        ${isTask ? '' : `<div class="field"><label class="field-label">Importe (opcional)</label><input id="new-amount" type="text" placeholder="9,99" value="${amountVal}"></div>`}
-        <div class="field"><label class="field-label">Fecha</label><input id="new-date" type="date" value="${dateVal}"></div>
+      <div class="row2">
+        ${isTask
+          ? `<div class="field"><label class="field-label">Fecha</label><input id="new-date" type="date" value="${dateVal}"></div>
+             <div class="field"><label class="field-label">Hora (opcional)</label><input id="new-time" type="time" value="${timeVal}"></div>`
+          : `<div class="field"><label class="field-label">Importe (opcional)</label><input id="new-amount" type="text" placeholder="9,99" value="${amountVal}"></div>
+             <div class="field"><label class="field-label">Fecha</label><input id="new-date" type="date" value="${dateVal}"></div>`}
       </div>
       <div class="field">
         <label class="field-label">Se repite</label>
@@ -1775,6 +1780,8 @@ function attachHandlers() {
         const parsedAmt = amtEl ? parseAmount(amtEl.value) : NaN;
         const amount = (state.modalKind !== 'tarea' && !isNaN(parsedAmt)) ? parsedAmt : null;
         const dateVal = document.getElementById('new-date').value || defaultDate();
+        const timeEl = document.getElementById('new-time');
+        const due_time = timeEl && timeEl.value ? timeEl.value : null;
         const recurrence = document.getElementById('new-recurrence').value;
         const notify_whatsapp = document.getElementById('new-chk-wa').checked;
         const notify_mail = document.getElementById('new-chk-mail').checked;
@@ -1785,11 +1792,11 @@ function attachHandlers() {
         let error;
         if (state.editingItem) {
           ({ error } = await sb.from('items').update({
-            name, amount, due_date: dateVal, recurrence, notify_whatsapp, notify_mail, anchor_day, shared_partner_id
+            name, amount, due_date: dateVal, due_time, recurrence, notify_whatsapp, notify_mail, anchor_day, shared_partner_id
           }).eq('id', state.editingItem.id));
         } else {
           ({ error } = await sb.from('items').insert({
-            user_id: state.session.user.id, name, amount, due_date: dateVal, recurrence, notify_whatsapp, notify_mail, kind: state.modalKind, anchor_day, shared_partner_id
+            user_id: state.session.user.id, name, amount, due_date: dateVal, due_time, recurrence, notify_whatsapp, notify_mail, kind: state.modalKind, anchor_day, shared_partner_id
           }));
         }
         state.busy = false;
