@@ -173,6 +173,76 @@
   .signout-link { font-size: 13px; color: var(--muted); background: none; border: none; }
   .icon-action-btn { background: transparent; border: none; font-size: 15px; padding: 4px 6px; flex-shrink: 0; opacity: 0.75; }
   .icon-action-btn:hover { opacity: 1; }
+  .section-nav { display:flex; gap:6px; margin-bottom:18px; border-bottom:1px solid var(--border); }
+  .section-nav button { background:transparent; border:none; color:var(--muted); padding:10px 14px; font-size:15px; font-weight:500; border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .section-nav button.active { color:var(--ink); border-bottom-color:var(--accent); font-weight:600; }
+  .btn-ghost-sm { background:var(--surface); border:1px solid var(--border); color:var(--ink); border-radius:10px; padding:9px 14px; font-size:14px; font-weight:500; }
+  .pack-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:6px; }
+  .pack-btn { text-align:left; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:14px; color:var(--ink); font-size:14px; }
+  .pack-btn strong { display:block; font-size:15px; margin-bottom:2px; }
+  .pack-btn span { color:var(--muted); font-size:12px; }
+  .tpl-row { display:grid; grid-template-columns:auto 1fr 140px; gap:8px; align-items:center; margin-bottom:10px; }
+  .tpl-row input[type=checkbox] { width:auto; }
+  .tpl-tag { display:block; font-size:11px; color:var(--muted); margin-top:3px; }
+  .task-row { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px; }
+  .task-row.is-done { opacity:.6; }
+  .task-row.is-done .name { text-decoration:line-through; }
+  .task-check { width:26px; height:26px; border-radius:50%; border:2px solid var(--border); background:var(--surface); color:var(--accent-ink); font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; padding:0; }
+  .task-check:hover { border-color:var(--accent); }
+  .task-row.is-done .task-check { background:var(--accent); border-color:var(--accent); }
+  .group-title { font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin:18px 0 2px; }
+  .group-title:first-child { margin-top:0; }
+  .item-amount { font-weight:700; font-size:15px; text-align:right; min-width:78px; flex-shrink:0; }
+  .item-amount.muted { color:var(--muted); font-weight:400; font-size:12px; }
+  @media (max-width: 560px) { .item-row .chan-icons, .task-row .chan-icons { display:none; } }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin:-4px 0 14px; }
+  .chip { background:var(--surface-2); border:1px solid var(--border); border-radius:999px; padding:5px 11px; font-size:13px; color:var(--ink); }
+  .bud-big { font-size:36px; font-weight:700; margin:0 0 4px; }
+  .bud-bar { display:flex; height:14px; border-radius:8px; overflow:hidden; background:var(--surface-2); margin:14px 0 10px; }
+  .bud-bar span { display:block; height:100%; }
+  .seg-fijo { background:#B99B5B; } .seg-punt { background:#D9C79A; } .seg-var { background:#8FA772; } .seg-sobra { background:var(--accent); }
+  .bud-legend { display:flex; flex-wrap:wrap; gap:6px 16px; font-size:12px; color:var(--muted); }
+  .bud-legend i { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; vertical-align:middle; }
+  .bud-card-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px; }
+  .bud-card-head h3 { font-size:15px; margin:0; font-weight:600; }
+  .bud-total { font-size:13px; color:var(--muted); font-weight:500; }
+  .bud-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--border); }
+  .bud-row:first-child { border-top:none; }
+  .bud-row .name { flex:1; min-width:0; font-size:14px; }
+  .bud-row .sub2 { display:block; font-size:12px; color:var(--muted); margin-top:2px; }
+  .bud-row .amt { font-weight:600; font-size:14px; white-space:nowrap; }
+  .progress { height:6px; background:var(--surface-2); border-radius:4px; overflow:hidden; margin-top:8px; }
+  .progress > span { display:block; height:100%; background:var(--accent); }
+  .month-bar { display:flex; align-items:center; gap:10px; margin:0 0 18px; flex-wrap:wrap; }
+  .month-box { display:flex; align-items:center; background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .month-arrow { background:transparent; border:none; color:var(--ink); font-size:20px; line-height:1; padding:8px 14px; }
+  .month-arrow:hover { background:var(--surface-2); }
+  .month-box select { width:auto; min-width:170px; border:none; border-left:1px solid var(--border); border-right:1px solid var(--border); border-radius:0; background:transparent; font-weight:600; font-size:15px; padding:9px 12px; text-align:center; text-align-last:center; }
+  .projected { opacity:.75; border-style:dashed; }
+  .seg-ahorro { background:#6F9FA8; }
+  .summary-box.static { cursor:default; }
+  .receipt { margin-top:16px; padding-top:12px; border-top:1px dashed var(--border); }
+  .receipt-row { display:flex; justify-content:space-between; font-size:13px; color:var(--muted); padding:4px 0; }
+  .receipt-total { margin-top:6px; padding-top:10px; border-top:1px solid var(--border); font-size:16px; font-weight:700; color:var(--ink); }
+  .partner-bar { display:flex; align-items:center; gap:10px; margin:0 0 18px; flex-wrap:wrap; }
+  .partner-pills { display:flex; gap:8px; flex-wrap:wrap; }
+  .partner-pill { background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:8px 16px; font-size:14px; font-weight:500; color:var(--ink); }
+  .partner-pill.active { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+  .balance-big { font-size:32px; font-weight:700; margin:4px 0 4px; }
+  .exp-row { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px 14px; display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .exp-row .item-mid .meta { color:var(--muted); }
+  .mode-toggle { display:flex; gap:8px; margin-bottom:14px; }
+  .mode-toggle button { flex:1; background:var(--surface-2); border:1px solid var(--border); border-radius:10px; padding:10px; font-size:14px; color:var(--ink); }
+  .mode-toggle button.active { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:600; }
+  .share-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .share-row .share-name { flex:1; display:flex; align-items:center; gap:8px; font-size:14px; }
+  .share-row input { width:74px; text-align:right; flex:none; }
+  .share-total { font-size:13px; margin-top:4px; }
+  .share-total.ok { color:var(--green-ink); }
+  .share-total.bad { color:var(--danger-ink); }
+  .partner-pill { display:inline-flex; align-items:center; gap:7px; }
+  .partner-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
   .demo-tag {
     position: fixed; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%);
     background: var(--ink); color: var(--bg); font-size: 11px; padding: 6px 12px; border-radius: 20px;
@@ -199,14 +269,183 @@ function daysBetween(a, b) { return Math.round((b - a) / DAY_MS); }
 function fmtDate(d) {
   return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }).replace('.', '');
 }
-function toDateStr(d) { return d.toISOString().slice(0,10); }
+// Fecha local (YYYY-MM-DD). toISOString() usa UTC y en España corre la fecha un día.
+function toDateStr(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+// Interpreta importes escritos a la española: "1.800,50", "1.800", "12,5" o "12.5"
+function parseAmount(s) {
+  s = String(s == null ? '' : s).trim().replace(/\s/g, '').replace('€', '');
+  if (!s) return NaN;
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
+  return parseFloat(s);
+}
+const PERIOD_MONTHS = { mes: 1, trimestre: 3, anio: 12 };
+function daysInMonth(y, m) { return new Date(y, m + 1, 0).getDate(); }
+function addMonthsAnchored(date, months, anchorDay) {
+  const first = new Date(date.getFullYear(), date.getMonth() + months, 1);
+  const day = Math.min(anchorDay || date.getDate(), daysInMonth(first.getFullYear(), first.getMonth()));
+  return new Date(first.getFullYear(), first.getMonth(), day);
+}
+// Próxima fecha de un pago que se repite. Siempre posterior a hoy, para no generar avisos atrasados en cadena.
+function nextOccurrence(item) {
+  const period = PERIOD_MONTHS[item.recurrence];
+  const due = new Date(item.due_date + 'T00:00:00');
+  const anchor = item.anchor_day || due.getDate();
+  let n = addMonthsAnchored(due, period, anchor);
+  let guard = 0;
+  while (n <= today && guard++ < 240) n = addMonthsAnchored(n, period, anchor);
+  return n;
+}
+// Lo pagado hace más de 45 días deja de mostrarse en las listas (el historial no se borra)
+function isRecent(it) {
+  if (!it.paid || !it.paid_on) return true;
+  return daysBetween(new Date(it.paid_on + 'T00:00:00'), today) <= 45;
+}
+
+// ---- Vista por mes ----
+function currentYm() { return toDateStr(today).slice(0, 7); }
+function monthOptions() {
+  const out = [];
+  for (let i = -24; i <= 36; i++) out.push(toDateStr(new Date(today.getFullYear(), today.getMonth() + i, 1)).slice(0, 7));
+  return out;
+}
+function monthLabel(ym) {
+  const [y, m] = ym.split('-').map(Number);
+  const name = new Date(y, m - 1, 1).toLocaleDateString('es-ES', { month: 'long' });
+  return name.charAt(0).toUpperCase() + name.slice(1) + ' ' + y;
+}
+function monthPhrase(ym) { // "octubre de 2026"
+  const [y, m] = ym.split('-').map(Number);
+  return new Date(y, m - 1, 1).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+}
+function changeMonth(ym) {
+  state.viewMonth = ym; state.summaryFilter = null; state.activeTab = 'proximos'; state.notice = '';
+  render();
+}
+function shiftMonth(delta) {
+  const opts = monthOptions();
+  const i = Math.min(opts.length - 1, Math.max(0, opts.indexOf(state.viewMonth) + delta));
+  changeMonth(opts[i]);
+}
+// Fecha sugerida al añadir algo: dentro de una semana, o el mismo día en el mes que estás mirando
+function defaultDate() {
+  const ym = state.viewMonth;
+  if (ym === currentYm()) return toDateStr(addDays(today, 7));
+  const [y, m] = ym.split('-').map(Number);
+  return toDateStr(new Date(y, m - 1, Math.min(today.getDate(), daysInMonth(y, m - 1))));
+}
+// Lo que se repetirá en un mes futuro: se proyecta desde el próximo pago de cada serie
+function projectedFor(kind, ym) {
+  if (ym <= currentYm()) return [];
+  const out = [];
+  state.items.filter(it => (it.kind || 'pago') === kind && !it.paid && it.recurrence && it.recurrence !== 'no').forEach(head => {
+    const period = PERIOD_MONTHS[head.recurrence];
+    const anchor = head.anchor_day || parseInt(head.due_date.slice(8, 10), 10);
+    let n = new Date(head.due_date + 'T00:00:00');
+    for (let i = 0; i < 600; i++) {
+      n = addMonthsAnchored(n, period, anchor);
+      const nym = toDateStr(n).slice(0, 7);
+      if (nym > ym) break;
+      if (nym === ym && n > today) out.push({ ...head, id: 'proj-' + head.id + '-' + toDateStr(n), due_date: toDateStr(n), projected: true });
+    }
+  });
+  return out.sort((a, b) => a.due_date.localeCompare(b.due_date));
+}
 function fmtMoney(n) { return Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.remove('hidden');
   setTimeout(() => t.classList.add('hidden'), 4000);
 }
+
+const TEMPLATE_PACKS = {
+  casa: { emoji: '🏠', title: 'Alquiler y casa',
+    pagos: [
+      { name: 'Alquiler', recurrence: 'mes' },
+      { name: 'Luz', recurrence: 'mes' },
+      { name: 'Gas', recurrence: 'mes' },
+      { name: 'Agua', recurrence: 'mes' },
+      { name: 'Internet y móvil', recurrence: 'mes' },
+      { name: 'Gastos de comunidad', recurrence: 'mes' },
+      { name: 'Seguro del hogar', recurrence: 'anio' },
+    ],
+    tareas: [
+      { name: 'Renovar el contrato de alquiler', recurrence: 'no' },
+      { name: 'Revisar la actualización anual del alquiler', recurrence: 'anio' },
+      { name: 'Dar de alta luz, gas e internet en la casa nueva', recurrence: 'no' },
+      { name: 'Empadronarme en la nueva vivienda', recurrence: 'no' },
+    ]},
+  viaje: { emoji: '✈️', title: 'Viaje',
+    pagos: [
+      { name: 'Vuelos', recurrence: 'no' },
+      { name: 'Alojamiento', recurrence: 'no' },
+      { name: 'Alquiler de coche', recurrence: 'no' },
+      { name: 'Seguro de viaje', recurrence: 'no' },
+      { name: 'Excursiones y entradas', recurrence: 'no' },
+    ],
+    tareas: [
+      { name: 'Revisar que el DNI o pasaporte estén vigentes', recurrence: 'no' },
+      { name: 'Revisar la fecha límite de cancelación gratuita', recurrence: 'no' },
+      { name: 'Descargar billetes y reservas', recurrence: 'no' },
+      { name: 'Hacer el check-in online', recurrence: 'no' },
+      { name: 'Preparar la maleta', recurrence: 'no' },
+    ]},
+  autonomo: { emoji: '💼', title: 'Autónomo',
+    pagos: [
+      { name: 'Cuota de autónomos', recurrence: 'mes' },
+      { name: 'IVA trimestral (modelo 303)', recurrence: 'trimestre' },
+      { name: 'IRPF trimestral (modelo 130)', recurrence: 'trimestre' },
+      { name: 'Gestoría', recurrence: 'mes' },
+    ],
+    tareas: [
+      { name: 'Emitir las facturas del mes', recurrence: 'mes' },
+      { name: 'Guardar tickets y facturas de gastos', recurrence: 'mes' },
+      { name: 'Preparar la documentación para la gestoría', recurrence: 'trimestre' },
+      { name: 'Presentar la declaración de la renta', recurrence: 'anio' },
+    ]},
+  suscripciones: { emoji: '📺', title: 'Suscripciones',
+    pagos: [
+      { name: 'Netflix', recurrence: 'mes' },
+      { name: 'Spotify', recurrence: 'mes' },
+      { name: 'Amazon Prime', recurrence: 'mes' },
+      { name: 'iCloud o Google One', recurrence: 'mes' },
+      { name: 'Gimnasio', recurrence: 'mes' },
+    ],
+    tareas: [
+      { name: 'Cancelar la prueba gratis', recurrence: 'no' },
+      { name: 'Revisar qué suscripciones ya no uso', recurrence: 'trimestre' },
+      { name: 'Revisar si compensa la renovación anual', recurrence: 'anio' },
+    ]},
+  coche: { emoji: '🚗', title: 'Coche',
+    pagos: [
+      { name: 'Seguro del coche', recurrence: 'anio' },
+      { name: 'Impuesto de circulación', recurrence: 'anio' },
+      { name: 'Garaje o parking', recurrence: 'mes' },
+    ],
+    tareas: [
+      { name: 'ITV', recurrence: 'anio' },
+      { name: 'Revisión y cambio de aceite', recurrence: 'anio' },
+      { name: 'Renovar el carnet de conducir', recurrence: 'no' },
+    ]},
+  salud: { emoji: '🩺', title: 'Salud y bienestar',
+    pagos: [
+      { name: 'Seguro médico', recurrence: 'mes' },
+      { name: 'Seguro dental', recurrence: 'mes' },
+    ],
+    tareas: [
+      { name: 'Cita médica', recurrence: 'no' },
+      { name: 'Dentista', recurrence: 'no' },
+      { name: 'Revisión de la vista', recurrence: 'no' },
+      { name: 'Análisis de sangre', recurrence: 'no' },
+    ]},
+};
+const RECURRENCE_LABEL = { mes: 'cada mes', trimestre: 'cada trimestre', anio: 'cada año' };
 
 let state = {
   screen: 'loading', // loading, plan, auth, channels, app
@@ -223,6 +462,28 @@ let state = {
   profile: { phone: '', avatar_url: '' },
   profileMsg: '',
   profileError: '',
+  section: 'pagos', // pagos, recordatorios
+  modalKind: 'pago',
+  templatesOpen: false,
+  templatePack: null,
+  notice: '',
+  entries: [],
+  entriesLoaded: false,
+  entriesError: '',
+  entryModal: null,
+  viewMonth: toDateStr(today).slice(0, 7), // mes que se está mirando (YYYY-MM)
+  partners: [],
+  partnersLoaded: false,
+  sharedExpenses: [],
+  sharedError: '',
+  activePartnerId: null,
+  partnerModal: false,
+  expenseModal: null,
+  sharedParticipants: [],
+  personModal: false,
+  newPersonColor: '#B85C38',
+  splitMode: 'equal', // 'equal' o 'custom', se usa solo mientras se completa el modal de gasto
+  customShares: {},
 };
 
 function urgency(item) {
@@ -249,6 +510,65 @@ async function loadItems() {
   const { data, error } = await sb.from('items').select('*').order('due_date', { ascending: true });
   if (error) { showToast('No se pudieron cargar los datos: ' + error.message); return; }
   state.items = data || [];
+  if (!state.entriesLoaded) await loadEntries();
+  if (!state.partnersLoaded) await loadShared();
+  render();
+}
+
+async function loadShared() {
+  state.partnersLoaded = true;
+  const { data: partners, error: e1 } = await sb.from('shared_partners').select('*').order('created_at', { ascending: true });
+  const { data: expenses, error: e2 } = await sb.from('shared_expenses').select('*').order('expense_date', { ascending: false });
+  const { data: participants, error: e3 } = await sb.from('shared_participants').select('*');
+  if (e1 || e2 || e3) { state.sharedError = (e1 || e2 || e3).message; state.partners = []; state.sharedExpenses = []; state.sharedParticipants = []; return; }
+  state.sharedError = '';
+  state.partners = partners || [];
+  state.sharedExpenses = expenses || [];
+  state.sharedParticipants = participants || [];
+  if (!state.activePartnerId || !state.partners.some(p => p.id === state.activePartnerId)) {
+    state.activePartnerId = state.partners[0] ? state.partners[0].id : null;
+  }
+}
+
+async function loadEntries() {
+  const { data, error } = await sb.from('budget_entries').select('*').order('created_at', { ascending: true });
+  state.entriesLoaded = true;
+  if (error) { state.entries = []; state.entriesError = error.message; }
+  else { state.entries = data || []; state.entriesError = ''; }
+}
+
+async function handleAvatarChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  state.busy = true; state.profileMsg = ''; state.profileError = ''; render();
+
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = `${state.session.user.id}/avatar.${ext}`;
+
+  const { error: uploadError } = await sb.storage.from('avatars').upload(path, file, { upsert: true });
+  if (uploadError) {
+    state.busy = false;
+    state.profileError = 'No se pudo subir la foto: ' + uploadError.message;
+    render();
+    return;
+  }
+
+  const { data } = sb.storage.from('avatars').getPublicUrl(path);
+  const avatar_url = data.publicUrl + '?t=' + Date.now(); // evita que quede una version vieja cacheada
+
+  const { error: saveError } = await sb.from('profiles').upsert({
+    id: state.session.user.id, avatar_url, phone: state.profile.phone || null
+  });
+
+  state.busy = false;
+  if (saveError) {
+    state.profileError = 'La foto se subió pero no se pudo guardar: ' + saveError.message;
+    render();
+    return;
+  }
+
+  state.profile.avatar_url = avatar_url;
+  state.profileMsg = 'Foto actualizada.';
   render();
 }
 
@@ -301,7 +621,7 @@ function renderPlan() {
     <div class="card">
       <h2 class="title">Un plan único, simple</h2>
       <p class="sub">Empieza a organizarte desde el primer día.</p>
-      <div class="price-row"><span class="amount">6 €</span><span class="period">por mes</span></div>
+      <div class="price-row"><span class="amount">4 €</span><span class="period">por mes</span></div>
       <ul class="feat">
         <li><span class="dot"></span>Ítems ilimitados: suscripciones, alquiler, fechas fiscales, lo que sea</li>
         <li><span class="dot"></span>Avisos por WhatsApp y mail</li>
@@ -325,7 +645,7 @@ function renderAuth() {
         <button class="${!isSignup ? 'active' : ''}" data-action="auth-mode-signin">Ya tengo cuenta</button>
       </div>
       <h2 class="title">${isSignup ? 'Crea tu cuenta' : 'Inicia sesión'}</h2>
-      <p class="sub">${isSignup ? 'Un minuto y ya podés cargar tu primer pago' : 'Entrá con tu mail y contraseña'}</p>
+      <p class="sub">${isSignup ? 'Un minuto y ya puedes cargar tu primer pago' : 'Entra con tu mail y contraseña'}</p>
       ${state.confirmMsg ? `<p class="sub" style="color:var(--green-ink);background:var(--green-bg);padding:10px 12px;border-radius:10px;">${state.confirmMsg}</p>` : ''}
       ${state.authError ? `<p class="sub" style="color:var(--danger-ink);background:var(--danger-bg);padding:10px 12px;border-radius:10px;">${state.authError}</p>` : ''}
       <div class="field"><label class="field-label">Email</label><input id="auth-email" type="email" placeholder="tu@email.com"></div>
@@ -377,8 +697,8 @@ function renderProfile() {
       ${state.profileError ? `<p class="sub" style="color:var(--danger-ink);background:var(--danger-bg);padding:10px 12px;border-radius:10px;">${state.profileError}</p>` : ''}
 
       <div class="field">
-        <label class="field-label">Foto de perfil (link a una imagen)</label>
-        <input id="profile-avatar" type="text" placeholder="https://..." value="${state.profile.avatar_url}">
+        <label class="field-label">Foto de perfil</label>
+        <input type="file" accept="image/*" onchange="handleAvatarChange(event)" ${state.busy ? 'disabled' : ''}>
       </div>
       <div class="field">
         <label class="field-label">WhatsApp</label>
@@ -389,7 +709,7 @@ function renderProfile() {
 
     <div class="card">
       <p class="modal-title" style="margin-bottom:4px;">Cambiar contraseña</p>
-      <p class="sub" style="margin-bottom:16px;">Dejá estos campos vacíos si no querés cambiarla.</p>
+      <p class="sub" style="margin-bottom:16px;">Deja estos campos vacíos si no quieres cambiarla.</p>
       <div class="field">
         <label class="field-label">Contraseña nueva</label>
         <input id="profile-new-password" type="password" placeholder="********">
@@ -403,36 +723,9 @@ function renderProfile() {
   </div>`;
 }
 
-function renderApp() {
-  const unpaid = state.items.filter(it => !it.paid);
-  const overdueItems = unpaid.filter(it => daysBetween(today, new Date(it.due_date + 'T00:00:00')) < 0);
-  const paidItems = state.items.filter(it => it.paid);
-  const nextItem = [...unpaid].sort((a,b) => new Date(a.due_date) - new Date(b.due_date))[0];
-  const nextDays = nextItem ? daysBetween(today, new Date(nextItem.due_date + 'T00:00:00')) : null;
-
-  const totalMonth = state.items.reduce((sum, it) => sum + (Number(it.amount) || 0), 0);
-  const paidMonth = paidItems.reduce((sum, it) => sum + (Number(it.amount) || 0), 0);
-
-  let list, listTitle, emptyMsg, footNote = '';
-  if (state.summaryFilter === 'paid') {
-    list = paidItems; listTitle = 'Pagado este mes'; emptyMsg = 'Todavía no marcaste nada como pagado.';
-  } else if (state.summaryFilter === 'next') {
-    list = nextItem ? [nextItem] : []; listTitle = 'Tu próximo vencimiento'; emptyMsg = 'No tienes nada pendiente.';
-  } else if (state.summaryFilter === 'active') {
-    list = state.items.slice(); listTitle = 'Todos tus ítems activos'; emptyMsg = 'Todavía no cargaste nada.';
-  } else if (state.summaryFilter === 'overdue') {
-    list = overdueItems; listTitle = 'Ítems vencidos'; emptyMsg = 'No tienes nada vencido. Bien ahí.';
-  } else {
-    list = state.items.filter(it => state.activeTab === 'todo' ? true : visibleInProximos(it));
-    listTitle = state.activeTab === 'todo' ? 'Todo lo que tienes cargado' : 'Tus pagos y fechas';
-    emptyMsg = state.activeTab === 'todo' ? 'Todavía no cargaste nada.' : 'No tienes nada urgente por ahora.';
-    if (state.activeTab === 'todo') footNote = '<p style="font-size:12px;color:var(--muted);margin-top:12px;">Aquí aparece todo, esté cerca o lejos. En "Próximos" solo se muestra lo que está dentro de los 15 días, o recién pagado.</p>';
-  }
-
-  const sf = (name) => state.summaryFilter === name ? 'is-active' : '';
-
+function renderTopBar() {
+  const s = state.section;
   return `
-  <div class="wrap-wide">
     <header class="app-header">
       <span class="brand-name"><svg class="jasmine-icon jasmine-icon-sm" viewBox="0 0 40 40" aria-hidden="true"><g><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(72 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(144 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(216 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(288 20 20)"/><circle cx="20" cy="20" r="4.2" fill="#E8C767" stroke="#B99B5B" stroke-width="0.6"/></g></svg>STELLY</span>
       <div style="display:flex;align-items:center;gap:14px;">
@@ -441,11 +734,519 @@ function renderApp() {
       </div>
     </header>
 
-    <div class="summary-grid">
+    <div class="section-nav">
+      <button class="${s === 'pagos' ? 'active' : ''}" data-action="section-pagos">Gastos</button>
+      <button class="${s === 'compartido' ? 'active' : ''}" data-action="section-compartido">Gastos compartidos</button>
+      <button class="${s === 'presupuesto' ? 'active' : ''}" data-action="section-presupuesto">Cuentas</button>
+      <button class="${s === 'recordatorios' ? 'active' : ''}" data-action="section-recordatorios">Recordatorios</button>
+    </div>
+    ${renderMonthBar()}
+    ${state.notice ? `<p class="sub" style="color:var(--green-ink);background:var(--green-bg);padding:10px 12px;border-radius:10px;">${state.notice}</p>` : ''}`;
+}
+
+function renderBudgetScreen() {
+  return `<div class="wrap-wide">${renderTopBar()}${renderBudget()}</div>${state.entryModal ? renderEntryModal() : ''}`;
+}
+
+const PARTNER_COLORS = ['#B85C38', '#6B8F71', '#5C7FA6', '#A65C8F', '#B99B5B', '#4D8C8C', '#8C6B4D', '#7C6B9E'];
+
+// Las personas de un espacio: siempre viven en shared_participants, cada una con su color.
+function participantsOf(spaceId) {
+  return state.sharedParticipants.filter(x => x.partner_id === spaceId);
+}
+
+// Saldo con cada persona del espacio (no entre ellas, solo entre vos y cada una), más el total.
+// El reparto siempre es en partes iguales entre todos los presentes al momento del gasto.
+function computeBalances(spaceId) {
+  const people = participantsOf(spaceId);
+  const N = people.length + 1; // vos + los demás
+  const rows = state.sharedExpenses.filter(e => e.partner_id === spaceId);
+  const perPerson = {};
+  const perPersonLines = {}; // el detalle de gastos detrás de cada saldo, siempre calculado a partir de "rows"
+  people.forEach(p => { perPerson[p.id] = 0; perPersonLines[p.id] = []; });
+  rows.forEach(e => {
+    const amount = Number(e.amount);
+    const pct = (name) => e.shares && e.shares[name] != null ? Number(e.shares[name]) / 100 : 1 / N;
+    if (e.paid_by === 'yo') {
+      people.forEach(p => {
+        const share = amount * pct(p.name);
+        perPerson[p.id] += share; // cada uno te debe su parte
+        perPersonLines[p.id].push({ id: e.id, description: e.description, amount: share, sign: 1, date: e.expense_date });
+      });
+    } else {
+      const payer = people.find(p => p.name === e.paid_by);
+      if (payer) {
+        const share = amount * pct('yo');
+        perPerson[payer.id] -= share; // vos le debés tu parte a quien pagó
+        perPersonLines[payer.id].push({ id: e.id, description: e.description, amount: share, sign: -1, date: e.expense_date });
+      }
+    }
+  });
+  people.forEach(p => { perPersonLines[p.id].sort((a, b) => a.date.localeCompare(b.date)); });
+  const total = Object.values(perPerson).reduce((a, b) => a + b, 0);
+  return { people, N, rows, perPerson, perPersonLines, total };
+}
+
+function renderSharedScreen() {
+  if (state.sharedError) {
+    return `<div class="wrap-wide">${renderTopBar()}<div class="card"><p class="sub" style="margin:0;">No se pudo cargar (${esc(state.sharedError)}). Falta ejecutar el SQL de gastos compartidos en Supabase.</p></div></div>${state.partnerModal ? renderPartnerModal() : ''}`;
+  }
+  if (!state.partners.length) {
+    return `<div class="wrap-wide">${renderTopBar()}
+      <div class="card">
+        <p class="modal-title" style="margin-bottom:4px;">Crea un espacio para compartir gastos</p>
+        <p class="sub" style="margin-bottom:14px;">Por ejemplo "Hogar", "Viaje a Roma" o el nombre de tu pareja. Dentro vas a poder agregar a las personas que hagan falta.</p>
+        <button class="btn-primary" data-action="open-partner-modal">+ Nuevo espacio</button>
+      </div>
+    </div>${state.partnerModal ? renderPartnerModal() : ''}`;
+  }
+  const p = state.partners.find(x => x.id === state.activePartnerId) || state.partners[0];
+  const { people, N, rows, perPerson, perPersonLines, total } = computeBalances(p.id);
+  const mo = (v) => fmtMoney(Math.abs(v)) + ' €';
+  const btns = (id) => `<button class="icon-action-btn" data-action="open-expense-modal" data-id="${id}" title="Editar" aria-label="Editar">✏️</button><button class="icon-action-btn" data-action="delete-expense" data-id="${id}" title="Eliminar" aria-label="Eliminar">🗑️</button>`;
+  const totNeg = total < -0.004, totPos = total > 0.004;
+  const dot = (color) => `<span class="partner-dot" style="background:${color};"></span>`;
+
+  return `
+  <div class="wrap-wide">
+    ${renderTopBar()}
+    <div class="partner-bar">
+      <div class="partner-pills">
+        ${state.partners.map(x => `<button class="partner-pill ${x.id === p.id ? 'active' : ''}" data-action="select-partner" data-id="${x.id}">${esc(x.name)}</button>`).join('')}
+      </div>
+      <button class="btn-ghost-sm" data-action="open-partner-modal">+ Nuevo espacio</button>
+      <button class="btn-ghost-sm" data-action="delete-partner" data-id="${p.id}">Eliminar espacio</button>
+    </div>
+
+    <div class="card">
+      <div class="bud-card-head">
+        <div><h3>${esc(p.name)}</h3><span class="bud-total">${people.length} persona${people.length === 1 ? '' : 's'} además de vos</span></div>
+        <button class="btn-ghost-sm" data-action="open-person-modal">+ Añadir persona</button>
+      </div>
+      ${people.length ? `<div style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;">
+        ${people.map(x => `<span class="partner-pill" style="cursor:default;">${dot(x.color)}${esc(x.name)}<button class="icon-action-btn" data-action="delete-person" data-id="${x.id}" title="Quitar" aria-label="Quitar" style="margin-left:2px;">✕</button></span>`).join('')}
+      </div>` : `<p class="sub" style="margin:8px 0 0;">Todavía no agregaste a nadie. Sumá a alguien para poder repartir gastos.</p>`}
+    </div>
+
+    ${people.length ? `<div class="card">
+      <p class="sub" style="margin:0 0 2px;">${totNeg ? 'Le debes al total del espacio' : totPos ? 'El espacio te debe en total' : 'Estás en paz con todos'}</p>
+      <p class="balance-big" style="${totNeg ? 'color:var(--danger-ink);' : totPos ? 'color:var(--green-ink);' : ''}">${mo(total)}</p>
+      <div style="margin-top:12px;">
+        ${people.map(x => {
+          const b = perPerson[x.id];
+          const neg = b < -0.004, pos = b > 0.004;
+          const txt = pos ? `${esc(x.name)} te debe` : neg ? `Le debes a ${esc(x.name)}` : `Estás en paz con ${esc(x.name)}`;
+          const lines = perPersonLines[x.id] || [];
+          const detalle = lines.length ? `<div style="margin-top:4px;">${lines.map(l => `<span class="sub2" style="display:block;">${esc(l.description)}: ${l.sign > 0 ? 'te debe' : 'le debes'} ${fmtMoney(l.amount)} €</span>`).join('')}</div>` : '';
+          return `<div class="bud-row" style="align-items:flex-start;"><div class="name">${dot(x.color)}${txt}${detalle}</div><div class="amt" style="${neg ? 'color:var(--danger-ink);' : pos ? 'color:var(--green-ink);' : ''}">${mo(b)}</div></div>`;
+        }).join('')}
+      </div>
+    </div>` : ''}
+
+    <div class="list-header">
+      <p>Gastos de ${esc(p.name)}</p>
+      ${people.length ? `<button class="btn-add" data-action="open-expense-modal">+ Añadir gasto</button>` : ''}
+    </div>
+
+    <div class="item-list">
+      ${!people.length ? `<div class="empty-state"><p>Agregá a alguien primero para poder cargar un gasto.</p></div>`
+        : rows.length ? rows.map(ex => {
+        const payer = people.find(x => x.name === ex.paid_by);
+        const quien = ex.paid_by === 'yo' ? 'Pagaste tú' : `Pagó ${esc(ex.paid_by)}`;
+        return `<div class="exp-row">
+          <div class="item-mid">
+            <p class="name">${payer ? dot(payer.color) : ''}${esc(ex.description)}</p>
+            <p class="meta">${quien} · a partes iguales entre ${N} · ${fmtDate(new Date(ex.expense_date + 'T00:00:00'))}${RECURRENCE_LABEL[ex.recurrence] ? ' · se repite ' + RECURRENCE_LABEL[ex.recurrence] : ''}${ex.from_item_id ? ' · desde Gastos' : (ex.created_item_id ? ' · también en Gastos' : '')}</p>
+          </div>
+          <div class="item-amount">${fmtMoney(ex.amount)} €</div>
+          ${btns(ex.id)}
+        </div>`;
+      }).join('') : `<div class="empty-state"><p>Todavía no cargaste ningún gasto en ${esc(p.name)}.</p></div>`}
+    </div>
+  </div>
+  ${state.partnerModal ? renderPartnerModal() : ''}
+  ${state.personModal ? renderPersonModal() : ''}
+  ${state.expenseModal ? renderExpenseModal() : ''}`;
+}
+
+function renderPartnerModal() {
+  return `
+  <div class="modal-backdrop" data-action="close-partner-modal">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <p class="modal-title">Nuevo espacio</p>
+      <div class="field"><label class="field-label">¿Cómo lo llamas?</label><input id="partner-name" type="text" placeholder="Hogar, Viaje a Roma, Lucía..."></div>
+      <p class="sub" style="margin:0 0 14px;">Después de crearlo vas a poder agregar dentro a las personas que hagan falta.</p>
+      <button class="btn-primary" data-action="save-partner">Crear</button>
+    </div>
+  </div>`;
+}
+
+function renderPersonModal() {
+  return `
+  <div class="modal-backdrop" data-action="close-person-modal">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <p class="modal-title">Añadir persona</p>
+      <div class="field"><label class="field-label">Nombre</label><input id="person-name" type="text" placeholder="Ana, Martín..."></div>
+      <label class="field-label">Color</label>
+      <div class="chips" style="margin-bottom:16px;">
+        ${PARTNER_COLORS.map(c => `<button type="button" data-action="pick-person-color" data-color="${c}" style="width:30px;height:30px;border-radius:50%;background:${c};border:2px solid ${c === state.newPersonColor ? 'var(--ink)' : 'transparent'};"></button>`).join('')}
+      </div>
+      <button class="btn-primary" data-action="save-person">Guardar</button>
+    </div>
+  </div>`;
+}
+
+function renderExpenseModal() {
+  const m = state.expenseModal, e = m.editing;
+  const p = state.partners.find(x => x.id === state.activePartnerId);
+  const people = participantsOf(p.id);
+  const N = people.length + 1;
+  const amountVal = e ? String(e.amount).replace('.', ',') : '';
+  const paidBy = e ? e.paid_by : 'yo';
+  const dateVal = e ? e.expense_date : toDateStr(today);
+  const recurrenceVal = e ? (e.recurrence || 'no') : 'no';
+  const alreadyLinked = e && e.created_item_id;
+  const mode = state.splitMode;
+  const shares = state.customShares;
+  const sum = Object.values(shares).reduce((a, b) => a + (Number(b) || 0), 0);
+  const sumOk = Math.abs(sum - 100) < 0.05;
+  const shareRow = (key, label, dotColor) => `
+    <div class="share-row">
+      <div class="share-name">${dotColor ? `<span class="partner-dot" style="background:${dotColor};"></span>` : ''}${label}</div>
+      <input type="number" min="0" max="100" step="1" value="${shares[key] != null ? shares[key] : ''}" oninput="state.customShares['${key.replace(/'/g, "\\'")}'] = this.value;" onblur="render();">
+      <span class="sub" style="width:14px;">%</span>
+    </div>`;
+  return `
+  <div class="modal-backdrop" data-action="close-expense-modal">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <p class="modal-title">${e ? 'Editar gasto' : 'Nuevo gasto'}</p>
+      <div class="field"><label class="field-label">¿Qué fue?</label><input id="exp-desc" type="text" placeholder="Súper, cena, alquiler..." value="${esc(e ? e.description : '')}"></div>
+      <div class="row2">
+        <div class="field"><label class="field-label">Importe</label><input id="exp-amount" type="text" inputmode="decimal" placeholder="0,00" value="${amountVal}"></div>
+        <div class="field"><label class="field-label">Fecha</label><input id="exp-date" type="date" value="${dateVal}"></div>
+      </div>
+      <div class="field">
+        <label class="field-label">¿Quién pagó?</label>
+        <select id="exp-paidby">
+          <option value="yo" ${paidBy === 'yo' ? 'selected' : ''}>Yo</option>
+          ${people.map(x => `<option value="${esc(x.name)}" ${paidBy === x.name ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}
+        </select>
+      </div>
+      <label class="field-label">¿Cómo se reparte?</label>
+      <div class="mode-toggle">
+        <button type="button" class="${mode === 'equal' ? 'active' : ''}" data-action="split-mode" data-mode="equal">Partes iguales</button>
+        <button type="button" class="${mode === 'custom' ? 'active' : ''}" data-action="split-mode" data-mode="custom">Personalizado</button>
+      </div>
+      ${mode === 'equal'
+        ? `<p class="sub" style="margin:0 0 14px;">Se reparte en partes iguales entre los ${N} (${fmtMoney(100 / N)}% cada uno).</p>`
+        : `<div style="margin-bottom:6px;">
+            ${shareRow('yo', 'Yo', null)}
+            ${people.map(x => shareRow(x.name, esc(x.name), x.color)).join('')}
+          </div>
+          <p class="share-total ${sumOk ? 'ok' : 'bad'}">Suman ${fmtMoney(sum)}%${sumOk ? ' ✓' : ' — tiene que sumar 100%'}</p>
+          <div style="height:8px;"></div>`}
+      <div class="field">
+        <label class="field-label">¿Se repite?</label>
+        <select id="exp-recurrence" ${alreadyLinked ? 'disabled' : ''}>
+          <option value="no" ${recurrenceVal === 'no' ? 'selected' : ''}>No, es único</option>
+          <option value="mes" ${recurrenceVal === 'mes' ? 'selected' : ''}>Cada mes</option>
+          <option value="trimestre" ${recurrenceVal === 'trimestre' ? 'selected' : ''}>Cada trimestre</option>
+          <option value="anio" ${recurrenceVal === 'anio' ? 'selected' : ''}>Cada año</option>
+        </select>
+      </div>
+      ${alreadyLinked
+        ? `<p class="sub" style="margin:0 0 14px;">Ya está trasladado a Gastos. Para cambiar el importe o cuándo se repite, editalo desde la pestaña Gastos.</p>`
+        : `<label class="chan-option"><input type="checkbox" id="exp-to-pagos"> Trasladar también a Gastos</label>
+           <p class="sub" style="margin:4px 0 14px;">Así te avisamos antes de la fecha y lo sumamos a tus Cuentas. Si se repite, en Gastos vas a ver la próxima fecha, no esta.</p>`}
+      <button class="btn-primary" data-action="save-expense">${e ? 'Guardar cambios' : 'Guardar'}</button>
+    </div>
+  </div>`;
+}
+
+function computeBudget(ym) {
+  ym = ym || state.viewMonth;
+  const pagos = state.items.filter(it => (it.kind || 'pago') === 'pago');
+  // Cada pago que se repite tiene una sola fila sin pagar (la próxima), así que se cuenta una vez
+  const recurring = pagos.filter(it => !it.paid && it.recurrence && it.recurrence !== 'no');
+  const fixedList = recurring.filter(it => Number(it.amount) > 0)
+    .map(it => ({ item: it, monthly: Number(it.amount) / PERIOD_MONTHS[it.recurrence] }));
+  const fixedNoAmount = recurring.filter(it => !(Number(it.amount) > 0));
+  const oneOffs = pagos.filter(it => (!it.recurrence || it.recurrence === 'no') && Number(it.amount) > 0 && it.due_date.slice(0, 7) === ym);
+  const sum = (arr, f) => arr.reduce((t, x) => t + f(x), 0);
+  const inMonth = (e) => !e.month || e.month === ym; // sin mes = todos los meses
+  const incomes = state.entries.filter(e => e.type === 'ingreso' && inMonth(e));
+  const variables = state.entries.filter(e => e.type === 'variable' && inMonth(e));
+  const ahorros = state.entries.filter(e => e.type === 'ahorro' && inMonth(e));
+  const ingresos = sum(incomes, e => Number(e.amount));
+  const fijos = sum(fixedList, x => x.monthly);
+  const puntuales = sum(oneOffs, it => Number(it.amount));
+  const vars = sum(variables, e => Number(e.amount));
+  const ahorro = sum(ahorros, e => Number(e.amount));
+  const sobra = ingresos - fijos - puntuales - vars;
+  return { incomes, variables, ahorros, fixedList, fixedNoAmount, oneOffs, ingresos, fijos, puntuales, vars, ahorro, sobra, libre: sobra - ahorro };
+}
+
+function renderMonthBar() {
+  const cur = currentYm();
+  return `
+    <div class="month-bar">
+      <div class="month-box">
+        <button class="month-arrow" data-action="month-prev" title="Mes anterior" aria-label="Mes anterior">‹</button>
+        <select onchange="changeMonth(this.value)" aria-label="Mes que quieres ver">
+          ${monthOptions().map(ym => `<option value="${ym}" ${ym === state.viewMonth ? 'selected' : ''}>${monthLabel(ym)}${ym === cur ? ' (este mes)' : ''}</option>`).join('')}
+        </select>
+        <button class="month-arrow" data-action="month-next" title="Mes siguiente" aria-label="Mes siguiente">›</button>
+      </div>
+      ${state.viewMonth !== cur ? '<button class="btn-ghost-sm" data-action="month-today">Volver a este mes</button>' : ''}
+    </div>`;
+}
+
+function renderProjectedRow(item) {
+  const isTask = item.kind === 'tarea';
+  const due = new Date(item.due_date + 'T00:00:00');
+  const rec = RECURRENCE_LABEL[item.recurrence] ? 'Se repite ' + RECURRENCE_LABEL[item.recurrence] : '';
+  if (isTask) {
+    return `
+    <div class="task-row projected">
+      <span class="task-check" style="border-style:dashed;"></span>
+      <div class="item-mid">
+        <p class="name">${esc(item.name)}</p>
+        <p class="meta">Previsto · ${fmtDate(due)} · ${rec.toLowerCase()}</p>
+      </div>
+    </div>`;
+  }
+  return `
+  <div class="item-row projected">
+    <div class="icon-badge" style="background:var(--surface-2);color:var(--muted);">🔁</div>
+    <div class="item-mid">
+      <p class="name">${esc(item.name)}</p>
+      <p class="meta">${rec}</p>
+    </div>
+    ${item.amount ? `<div class="item-amount">${fmtMoney(item.amount)} €</div>` : '<div class="item-amount muted">Sin importe</div>'}
+    <div class="item-badge-col">
+      <span class="badge" style="background:var(--surface-2);color:var(--muted);">Previsto</span>
+      <p class="date-sub">${fmtDate(due)}</p>
+    </div>
+  </div>`;
+}
+
+function renderMonthView() {
+  const isTask = state.section === 'recordatorios';
+  const kind = isTask ? 'tarea' : 'pago';
+  const ym = state.viewMonth;
+  const isPast = ym < currentYm();
+  const todayStr = toDateStr(today);
+  const real = state.items.filter(it => (it.kind || 'pago') === kind && it.due_date.slice(0, 7) === ym);
+  const proj = projectedFor(kind, ym);
+  const all = [...real, ...proj].sort((a, b) => a.due_date.localeCompare(b.due_date));
+  const amt = (it) => Number(it.amount) || 0;
+  const paidList = real.filter(it => it.paid);
+  const pendingList = all.filter(it => !it.paid);
+  const overdue = real.filter(it => !it.paid && it.due_date < todayStr);
+  const sum = (arr) => arr.reduce((t, it) => t + amt(it), 0);
+  const noAmt = isTask ? 0 : all.filter(it => !(amt(it) > 0)).length;
+  const box = (label, value) => `<div class="summary-box static"><p class="label">${label}</p><p class="value">${value}</p></div>`;
+  const boxes = isTask
+    ? box('En el mes', all.length) + box('Hechos', paidList.length) + box('Pendientes', pendingList.length) + box('Vencidos', overdue.length)
+    : box('Total del mes', fmtMoney(sum(all)) + ' €') + box('Pagado', fmtMoney(sum(paidList)) + ' €') + box(isPast ? 'Sin pagar' : 'Por pagar', fmtMoney(sum(pendingList)) + ' €') + box('Pagos', all.length);
+  return `
+  <div class="wrap-wide">
+    ${renderTopBar()}
+    <div class="summary-grid">${boxes}</div>
+    <div class="list-header">
+      <p>${isTask ? 'Recordatorios de ' : 'Pagos de '}${monthPhrase(ym)}</p>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-ghost-sm" data-action="open-templates">Plantillas</button>
+        <button class="btn-add" data-action="open-modal">+ Añadir</button>
+      </div>
+    </div>
+    <div class="item-list">${all.length
+      ? all.map(it => it.projected ? renderProjectedRow(it) : renderItemRow(it)).join('')
+      : `<div class="empty-state"><p>${isTask ? 'No hay recordatorios en este mes.' : 'No hay pagos en este mes.'}</p></div>`}</div>
+    ${proj.length ? '<p style="font-size:12px;color:var(--muted);margin-top:12px;">Lo marcado como "Previsto" se crea solo cuando completas el anterior. Para cambiarlo, edita el actual.</p>' : ''}
+    ${noAmt ? `<p style="font-size:12px;color:var(--muted);margin-top:6px;">${noAmt} pago${noAmt === 1 ? ' no tiene importe y no suma' : 's no tienen importe y no suman'} en el total.</p>` : ''}
+  </div>
+  ${state.modalOpen ? renderModal() : ''}
+  ${state.templatesOpen ? renderTemplates() : ''}`;
+}
+
+function renderBudget() {
+  if (state.entriesError) {
+    return `<div class="card"><p class="sub" style="margin:0;">No se pudo cargar el presupuesto (${esc(state.entriesError)}). Falta ejecutar el SQL de presupuesto en Supabase.</p></div>`;
+  }
+  const ym = state.viewMonth, cur = currentYm();
+  const b = computeBudget(ym);
+  const hasIncome = b.ingresos > 0;
+  const total = Math.max(b.ingresos, b.fijos + b.puntuales + b.vars, 1);
+  const w = (v) => Math.max(0, v / total * 100).toFixed(2) + '%';
+  const neg = b.sobra < 0;
+  const mo = (v) => fmtMoney(v) + ' €';
+  const sobraPos = Math.max(0, b.sobra);
+  const ahorroSeg = Math.min(b.ahorro, sobraPos);
+  const libreSeg = Math.max(0, sobraPos - b.ahorro);
+  const btns = (id) => `<button class="icon-action-btn" data-action="open-entry" data-id="${id}" title="Editar" aria-label="Editar">✏️</button><button class="icon-action-btn" data-action="delete-entry" data-id="${id}" title="Eliminar" aria-label="Eliminar">🗑️</button>`;
+  const entryRow = (e, sub) => { const s = sub || (e.month ? 'Solo este mes' : ''); return `<div class="bud-row"><div class="name">${esc(e.name)}${s ? `<span class="sub2">${s}</span>` : ''}</div><div class="amt">${mo(e.amount)}</div>${btns(e.id)}</div>`; };
+  const head = (title, totalTxt, type, label) => `<div class="bud-card-head"><div><h3>${title}</h3>${totalTxt ? `<span class="bud-total">${totalTxt}</span>` : ''}</div>${type ? `<button class="btn-ghost-sm" data-action="open-entry" data-type="${type}">${label}</button>` : ''}</div>`;
+  const nNoAmt = b.fixedNoAmount.length;
+  const libreNeg = b.libre < 0;
+  const titulo = libreNeg ? (ym === cur ? 'Te faltan este mes' : 'Te faltan en ' + monthPhrase(ym)) : (ym === cur ? 'Tienes libre este mes' : 'Tienes libre en ' + monthPhrase(ym));
+  let subMsg;
+  if (!hasIncome) subMsg = 'Empieza cargando lo que te entra al mes; con tus pagos calculamos el resto.';
+  else if (!libreNeg) subMsg = 'Es el ' + Math.round(b.libre / b.ingresos * 100) + ' % de lo que te entra, ya reservando tu ahorro.';
+  else if (b.sobra >= 0) subMsg = 'Lo que reservaste para ahorrar es mayor a lo que te sobra.';
+  else subMsg = 'Tus gastos superan tus ingresos, antes de contar el ahorro.';
+  const receiptRow = (label, val, cls) => val ? `<div class="receipt-row ${cls || ''}"><span>${label}</span><span>${val < 0 ? '−' : ''}${mo(Math.abs(val))}</span></div>` : '';
+
+  return `
+  <div class="card">
+    <p class="sub" style="margin:0 0 4px;">${titulo}</p>
+    <p class="bud-big" style="${libreNeg ? 'color:var(--danger-ink);' : ''}">${mo(Math.abs(b.libre))}</p>
+    <p class="sub" style="margin:0;">${subMsg}</p>
+    <div class="bud-bar">
+      <span class="seg-fijo" style="width:${w(b.fijos)}"></span>
+      <span class="seg-punt" style="width:${w(b.puntuales)}"></span>
+      <span class="seg-var" style="width:${w(b.vars)}"></span>
+      <span class="seg-ahorro" style="width:${w(ahorroSeg)}"></span>
+      <span class="seg-sobra" style="width:${w(libreSeg)}"></span>
+    </div>
+    ${hasIncome ? `<div class="receipt">
+      ${receiptRow('Ingresos', b.ingresos)}
+      ${receiptRow('Gastos fijos', -b.fijos)}
+      ${receiptRow('Pagos puntuales', -b.puntuales)}
+      ${receiptRow('Gastos variables', -b.vars)}
+      ${receiptRow('Ahorro', -b.ahorro)}
+      <div class="receipt-row receipt-total" style="${libreNeg ? 'color:var(--danger-ink);' : ''}"><span>${libreNeg ? 'Te falta' : 'Libre para gastar'}</span><span>${mo(Math.abs(b.libre))}</span></div>
+    </div>` : ''}
+    ${ym !== cur ? '<p class="sub" style="margin:10px 0 0;font-size:12px;">Los gastos fijos son una estimación mensual. Los pagos puntuales, y lo marcado como "solo este mes", son los de ese mes.</p>' : ''}
+  </div>
+
+  <div class="card">
+    ${head('Ingresos', hasIncome ? mo(b.ingresos) + ' en el mes' : '', 'ingreso', '+ Añadir')}
+    ${b.incomes.length ? `<div>${b.incomes.map(e => entryRow(e)).join('')}</div>` : '<p class="sub" style="margin:8px 0 0;">Añade tu sueldo y cualquier otro ingreso.</p>'}
+  </div>
+
+  <div class="card">
+    ${head('Gastos fijos', mo(b.fijos) + ' al mes', '', '')}
+    <p class="sub" style="margin:0 0 6px;">Salen de tus <strong>Pagos que se repiten</strong>, calculados por mes. Para cambiarlos, edítalos en la pestaña Gastos.</p>
+    ${b.fixedList.length ? `<div>${b.fixedList.map(({ item, monthly }) => `<div class="bud-row"><div class="name">${esc(item.name)}<span class="sub2">${fmtMoney(item.amount)} € ${RECURRENCE_LABEL[item.recurrence]}${item.recurrence !== 'mes' ? ' · ' + fmtMoney(monthly) + ' € al mes' : ''}</span></div><div class="amt">${mo(monthly)}</div></div>`).join('')}</div>` : '<p class="sub" style="margin:8px 0 0;">Todavía no tienes pagos que se repitan con importe. Añádelos en la pestaña Gastos.</p>'}
+    ${nNoAmt ? `<p class="sub" style="margin:10px 0 0;color:var(--orange-ink);">${nNoAmt} pago${nNoAmt === 1 ? ' que se repite no tiene importe y no se cuenta' : 's que se repiten no tienen importe y no se cuentan'}: ${b.fixedNoAmount.map(it => esc(it.name)).join(', ')}. Añádelo${nNoAmt === 1 ? '' : 's'} con el lápiz ✏️ en Pagos.</p>` : ''}
+  </div>
+
+  ${b.oneOffs.length ? `<div class="card">
+    ${head('Pagos puntuales de ' + monthPhrase(ym), mo(b.puntuales), '', '')}
+    <div>${b.oneOffs.map(it => `<div class="bud-row"><div class="name">${esc(it.name)}<span class="sub2">Vence el ${fmtDate(new Date(it.due_date + 'T00:00:00'))}</span></div><div class="amt">${mo(it.amount)}</div></div>`).join('')}</div>
+  </div>` : ''}
+
+  <div class="card">
+    ${head('Gastos variables', b.vars > 0 ? mo(b.vars) + ' en el mes' : '', 'variable', '+ Añadir')}
+    <p class="sub" style="margin:0 0 6px;">Estima cuánto gastas al mes en cada cosa: comida, transporte, ocio...</p>
+    ${b.variables.length ? `<div>${b.variables.map(e => entryRow(e)).join('')}</div>` : ''}
+  </div>
+
+  <div class="card">
+    ${head('Ahorro mensual', b.ahorro > 0 ? mo(b.ahorro) + ' en el mes' : '', 'ahorro', '+ Añadir')}
+    <p class="sub" style="margin:0 0 6px;">Reparte lo que te sobra: por ejemplo, 50 € para un viaje y 100 € para imprevistos.</p>
+    ${b.ahorros.length ? `<div>${b.ahorros.map(e => entryRow(e, e.month ? 'Solo este mes' : mo(Number(e.amount) * 12) + ' en un año')).join('')}</div>` : ''}
+    ${b.ahorros.length ? `<p class="sub" style="margin:12px 0 0;">Reservas ${mo(b.ahorro)} al mes${hasIncome ? ' (el ' + Math.round(b.ahorro / b.ingresos * 100) + ' % de lo que te entra)' : ''}. Ya está descontado de lo que ves arriba como "Libre para gastar".</p>` : ''}
+  </div>
+
+  <p class="sub" style="font-size:12px;">Cálculos orientativos a partir de lo que has cargado. No son asesoramiento financiero.</p>`;
+}
+
+function renderEntryModal() {
+  const m = state.entryModal, t = m.type, e = m.editing;
+  const cfg = {
+    ingreso: { nuevo: 'Nuevo ingreso', editar: 'Editar ingreso', label: 'Nombre', ph: 'Sueldo, extra...', amountLabel: 'Importe al mes', chips: ['Sueldo', 'Extra', 'Alquiler cobrado'] },
+    variable: { nuevo: 'Nuevo gasto variable', editar: 'Editar gasto variable', label: 'Nombre', ph: 'Comida, transporte...', amountLabel: 'Importe estimado al mes', chips: ['Comida', 'Transporte', 'Ocio', 'Ropa', 'Salud', 'Otros'] },
+    ahorro: { nuevo: 'Nuevo ahorro', editar: 'Editar ahorro', label: '¿Para qué quieres ahorrar?', ph: 'Viaje, fondo de emergencia...', amountLabel: 'Cuánto al mes', chips: ['Viaje', 'Fondo de emergencia', 'Regalos', 'Reforma', 'Coche'] },
+  }[t];
+  const amountVal = e ? String(e.amount).replace('.', ',') : '';
+  return `
+  <div class="modal-backdrop" data-action="close-entry">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <p class="modal-title">${e ? cfg.editar : cfg.nuevo}</p>
+      <div class="field"><label class="field-label">${cfg.label}</label><input id="entry-name" type="text" placeholder="${cfg.ph}" value="${esc(e ? e.name : '')}"></div>
+      <div class="chips">${cfg.chips.map(n => `<button type="button" class="chip" data-action="entry-chip" data-name="${esc(n)}">${n}</button>`).join('')}</div>
+      <div class="field"><label class="field-label">${cfg.amountLabel}</label><input id="entry-amount" type="text" inputmode="decimal" placeholder="0,00" value="${amountVal}"></div>
+      <div class="field">
+        <label class="field-label">Se aplica a</label>
+        <select id="entry-scope">
+          <option value="all">Todos los meses</option>
+          <option value="only" ${e && e.month ? 'selected' : ''}>Solo ${monthLabel(state.viewMonth)}</option>
+        </select>
+      </div>
+      <div style="margin-top:14px;"><button class="btn-primary" data-action="save-entry">${e ? 'Guardar cambios' : 'Guardar'}</button></div>
+    </div>
+  </div>`;
+}
+
+function renderApp() {
+  if (state.section === 'presupuesto') return renderBudgetScreen();
+  if (state.section === 'compartido') return renderSharedScreen();
+  if (state.viewMonth !== currentYm()) return renderMonthView();
+  const isTask = state.section === 'recordatorios';
+  const T = (a, b) => (isTask ? a : b);
+  const items = state.items.filter(it => (it.kind || 'pago') === (isTask ? 'tarea' : 'pago'));
+  const dl = (it) => daysBetween(today, new Date(it.due_date + 'T00:00:00'));
+  const unpaid = items.filter(it => !it.paid);
+  const overdueItems = unpaid.filter(it => dl(it) < 0);
+  const recent = items.filter(isRecent);
+  const ym = toDateStr(today).slice(0, 7);
+  const paidThisMonth = items.filter(it => it.paid && it.paid_on && it.paid_on.slice(0, 7) === ym);
+  const paidItems = isTask ? recent.filter(it => it.paid) : paidThisMonth;
+  const todayItems = unpaid.filter(it => dl(it) === 0);
+  const weekItems = unpaid.filter(it => dl(it) >= 0 && dl(it) <= 7);
+  const nextItem = [...unpaid].sort((a, b) => new Date(a.due_date) - new Date(b.due_date))[0];
+  const nextDays = nextItem ? dl(nextItem) : null;
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  const paidMonth = paidThisMonth.reduce((sum, it) => sum + (Number(it.amount) || 0), 0);
+  const pendingMonth = unpaid.filter(it => new Date(it.due_date + 'T00:00:00') <= endOfMonth).reduce((sum, it) => sum + (Number(it.amount) || 0), 0);
+  const totalMonth = paidMonth + pendingMonth;
+
+  const F = state.summaryFilter;
+  let list, listTitle, emptyMsg, footNote = '', grouped = false;
+  if (F === 'paid') {
+    list = paidItems; listTitle = T('Hechos', 'Pagado este mes');
+    emptyMsg = T('Todavía no marcaste nada como hecho.', 'Todavía no marcaste nada como pagado.');
+  } else if (F === 'next') {
+    list = nextItem ? [nextItem] : []; listTitle = 'Tu próximo vencimiento'; emptyMsg = 'No tienes nada pendiente.';
+  } else if (F === 'active') {
+    list = recent.slice(); listTitle = 'Todos tus ítems activos'; emptyMsg = 'Todavía no cargaste nada.';
+  } else if (F === 'overdue') {
+    list = overdueItems; listTitle = T('Recordatorios vencidos', 'Ítems vencidos'); emptyMsg = 'No tienes nada vencido. Bien ahí.';
+  } else if (F === 'today') {
+    list = todayItems; listTitle = 'Para hoy'; emptyMsg = 'No tienes nada para hoy.';
+  } else if (F === 'week') {
+    list = weekItems; listTitle = 'Próximos 7 días'; emptyMsg = 'No tienes nada en los próximos 7 días.';
+  } else {
+    list = items.filter(it => state.activeTab === 'todo' ? isRecent(it) : visibleInProximos(it));
+    listTitle = state.activeTab === 'todo' ? 'Todo lo que tienes cargado' : T('Tus recordatorios', 'Tus pagos y fechas');
+    emptyMsg = state.activeTab === 'todo' ? 'Todavía no cargaste nada.' : 'No tienes nada urgente por ahora.';
+    grouped = isTask;
+    if (state.activeTab === 'todo') footNote = '<p style="font-size:12px;color:var(--muted);margin-top:12px;">Aquí aparece todo, esté cerca o lejos. En "Próximos" solo se muestra lo que está dentro de los 15 días, o recién completado. Lo completado hace más de 45 días se oculta.</p>';
+  }
+
+  const sf = (name) => state.summaryFilter === name ? 'is-active' : '';
+  const listHtml = list.length
+    ? (grouped ? renderTaskGroups(list) : list.map(renderItemRow).join(''))
+    : `<div class="empty-state"><p>${emptyMsg}</p></div>`;
+
+  const boxes = isTask ? `
+      <button type="button" class="summary-box ${sf('today')}" data-action="filter-today"><p class="label">Para hoy</p><p class="value">${todayItems.length}</p></button>
+      <button type="button" class="summary-box ${sf('week')}" data-action="filter-week"><p class="label">Próximos 7 días</p><p class="value">${weekItems.length}</p></button>
+      <button type="button" class="summary-box ${sf('overdue')}" data-action="filter-overdue"><p class="label">Vencidos</p><p class="value">${overdueItems.length}</p></button>
+      <button type="button" class="summary-box ${sf('paid')}" data-action="filter-paid"><p class="label">Hechos</p><p class="value">${paidItems.length} <span class="of">de ${recent.length}</span></p></button>`
+    : `
       <button type="button" class="summary-box ${sf('paid')}" data-action="filter-paid"><p class="label">Pagado este mes</p><p class="value">${fmtMoney(paidMonth)} € <span class="of">de ${fmtMoney(totalMonth)} €</span></p></button>
       <button type="button" class="summary-box ${sf('next')}" data-action="filter-next"><p class="label">Próximo vencimiento</p><p class="value">${nextDays !== null ? nextDays + ' días' : '—'}</p></button>
-      <button type="button" class="summary-box ${sf('active')}" data-action="filter-active"><p class="label">Ítems activos</p><p class="value">${state.items.length}</p></button>
-      <button type="button" class="summary-box ${sf('overdue')}" data-action="filter-overdue"><p class="label">Ítems vencidos</p><p class="value">${overdueItems.length}</p></button>
+      <button type="button" class="summary-box ${sf('active')}" data-action="filter-active"><p class="label">Ítems activos</p><p class="value">${recent.length}</p></button>
+      <button type="button" class="summary-box ${sf('overdue')}" data-action="filter-overdue"><p class="label">Ítems vencidos</p><p class="value">${overdueItems.length}</p></button>`;
+
+  return `
+  <div class="wrap-wide">
+    ${renderTopBar()}
+
+    <div class="summary-grid">${boxes}
     </div>
 
     <div class="tabs">
@@ -455,24 +1256,78 @@ function renderApp() {
 
     <div class="list-header">
       <p>${listTitle}</p>
-      <button class="btn-add" data-action="open-modal">+ Añadir</button>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-ghost-sm" data-action="open-templates">Plantillas</button>
+        <button class="btn-add" data-action="open-modal">+ Añadir</button>
+      </div>
     </div>
 
-    <div class="item-list">
-      ${list.length ? list.map(renderItemRow).join('') : `
-        <div class="empty-state">
-          <p>${emptyMsg}</p>
-        </div>`}
-    </div>
+    <div class="item-list">${listHtml}</div>
 
     ${footNote}
   </div>
   ${state.modalOpen ? renderModal() : ''}
+  ${state.templatesOpen ? renderTemplates() : ''}
   `;
+}
+
+function renderTaskGroups(list) {
+  const dl = (it) => daysBetween(today, new Date(it.due_date + 'T00:00:00'));
+  const groups = [
+    ['Vencidos', it => !it.paid && dl(it) < 0],
+    ['Hoy', it => !it.paid && dl(it) === 0],
+    ['Próximos 7 días', it => !it.paid && dl(it) >= 1 && dl(it) <= 7],
+    ['Más adelante', it => !it.paid && dl(it) > 7],
+    ['Hechos', it => it.paid],
+  ];
+  return groups.map(([title, fn]) => {
+    const rows = list.filter(fn);
+    return rows.length ? `<p class="group-title">${title}</p>` + rows.map(renderItemRow).join('') : '';
+  }).join('');
+}
+
+function renderTemplates() {
+  const isTask = state.section === 'recordatorios';
+  const listKey = isTask ? 'tareas' : 'pagos';
+  const pack = state.templatePack ? TEMPLATE_PACKS[state.templatePack] : null;
+  let body;
+  if (!pack) {
+    const available = Object.entries(TEMPLATE_PACKS).filter(([k, p]) => (p[listKey] || []).length);
+    body = `
+      <p class="modal-title">${isTask ? 'Plantillas de recordatorios' : 'Plantillas de pagos'}</p>
+      <p class="sub" style="margin-bottom:14px;">${isTask
+        ? 'Cosas que tienes que hacer. Elige un pack y después cambias nombres y fechas como quieras.'
+        : 'Cosas que tienes que pagar. Elige un pack y después pones la fecha límite de cada una.'} Son solo sugerencias: revisa que apliquen a tu caso.</p>
+      <div class="pack-grid">
+        ${available.map(([key, p]) => `<button class="pack-btn" data-action="pick-pack" data-pack="${key}"><strong>${p.emoji} ${p.title}</strong><span>${p[listKey].length} ${isTask ? 'recordatorios' : 'pagos'}</span></button>`).join('')}
+      </div>`;
+  } else {
+    const defDate = defaultDate();
+    body = `
+      <p class="modal-title">${pack.emoji} ${pack.title}</p>
+      <p class="sub" style="margin-bottom:14px;">${isTask
+        ? 'Desmarca lo que no necesites y cambia nombres y fechas. La fecha es el día en que tienes que hacerlo.'
+        : 'Desmarca lo que no necesites y cambia nombres y fechas. La fecha es el día límite para pagar.'}</p>
+      ${pack[listKey].map((tpl, i) => `
+        <div class="tpl-row">
+          <input type="checkbox" id="tpl-chk-${i}" checked>
+          <div>
+            <input type="text" id="tpl-name-${i}" value="${esc(tpl.name)}">
+            <span class="tpl-tag">${RECURRENCE_LABEL[tpl.recurrence] ? 'Se repite ' + RECURRENCE_LABEL[tpl.recurrence] : (isTask ? 'Una sola vez' : 'Pago único')}</span>
+          </div>
+          <input type="date" id="tpl-date-${i}" value="${defDate}">
+        </div>`).join('')}
+      <div style="margin-top:14px;display:flex;gap:8px;">
+        <button class="btn-ghost-sm" data-action="back-packs">← Volver</button>
+        <button class="btn-primary" data-action="add-template-items" style="flex:1;">Añadir seleccionados</button>
+      </div>`;
+  }
+  return `<div class="modal-backdrop" data-action="close-templates"><div class="modal-box" onclick="event.stopPropagation()">${body}</div></div>`;
 }
 
 function renderItemRow(item) {
   const u = urgency(item);
+  const isTask = item.kind === 'tarea';
   const colors = {
     red: ['var(--danger-bg)','var(--danger-ink)'],
     orange: ['var(--orange-bg)','var(--orange-ink)'],
@@ -481,13 +1336,43 @@ function renderItemRow(item) {
   };
   const [bg, ink] = colors[u.level];
   const chanIcons = (item.notify_whatsapp ? '💬' : '') + ' ' + (item.notify_mail ? '✉️' : '');
+  const actions = `
+    <button class="icon-action-btn" data-action="open-edit-modal" data-id="${item.id}" title="Editar" aria-label="Editar">✏️</button>
+    <button class="icon-action-btn" data-action="delete-item" data-id="${item.id}" title="Eliminar" aria-label="Eliminar">🗑️</button>`;
+
+  if (isTask) {
+    let when;
+    if (item.paid) when = 'Hecho' + (item.paid_on ? ' el ' + fmtDate(new Date(item.paid_on + 'T00:00:00')) : '');
+    else if (u.daysLeft < 0) when = 'Vencido hace ' + (-u.daysLeft) + (u.daysLeft === -1 ? ' día' : ' días');
+    else if (u.daysLeft === 0) when = 'Hoy';
+    else if (u.daysLeft === 1) when = 'Mañana';
+    else when = 'En ' + u.daysLeft + ' días · ' + fmtDate(u.due);
+    const rec = RECURRENCE_LABEL[item.recurrence] ? ' · se repite ' + RECURRENCE_LABEL[item.recurrence] : '';
+    const metaColor = (item.paid || u.level === 'green') ? 'var(--muted)' : ink;
+    return `
+    <div class="task-row ${item.paid ? 'is-done' : ''}">
+      <button class="task-check" data-action="${item.paid ? 'undo-paid' : 'mark-paid'}" data-id="${item.id}" title="${item.paid ? 'Marcar como pendiente' : 'Marcar como hecho'}" aria-label="${item.paid ? 'Marcar como pendiente' : 'Marcar como hecho'}">${item.paid ? '✓' : ''}</button>
+      <div class="item-mid">
+        <p class="name">${esc(item.name)}</p>
+        <p class="meta" style="color:${metaColor};">${when}${rec}</p>
+      </div>
+      <div class="chan-icons">${chanIcons}</div>
+      ${actions}
+    </div>`;
+  }
+
+  const rec = RECURRENCE_LABEL[item.recurrence] ? 'Se repite ' + RECURRENCE_LABEL[item.recurrence] : 'Pago único';
+  const amountHtml = item.amount
+    ? `<div class="item-amount">${fmtMoney(item.amount)} €</div>`
+    : `<div class="item-amount muted">Sin importe</div>`;
   return `
   <div class="item-row ${item.paid ? 'is-paid' : ''}">
     <div class="icon-badge" style="background:${bg};color:${ink};">${item.paid ? '✓' : '🔔'}</div>
     <div class="item-mid">
-      <p class="name">${item.name}</p>
-      <p class="meta">${item.paid ? (item.amount ? fmtMoney(item.amount) + ' €, pagado' : 'Pagado') : (item.amount ? fmtMoney(item.amount) + ' €' : 'Sin monto cargado')}</p>
+      <p class="name">${esc(item.name)}</p>
+      <p class="meta">${rec}</p>
     </div>
+    ${amountHtml}
     <div class="item-badge-col">
       ${!item.paid ? `<span class="badge" style="background:${bg};color:${ink};">${u.label}</span>` : ''}
       <p class="date-sub">${fmtDate(u.due)}</p>
@@ -496,27 +1381,27 @@ function renderItemRow(item) {
     ${!item.paid
       ? `<button class="mark-paid-btn" data-action="mark-paid" data-id="${item.id}">Pagado</button>`
       : `<button class="mark-paid-btn is-done" data-action="undo-paid" data-id="${item.id}">Al día</button>`}
-    <button class="icon-action-btn" data-action="open-edit-modal" data-id="${item.id}" title="Editar" aria-label="Editar">✏️</button>
-    <button class="icon-action-btn" data-action="delete-item" data-id="${item.id}" title="Eliminar" aria-label="Eliminar">🗑️</button>
+    ${actions}
   </div>`;
 }
 
 function renderModal() {
   const it = state.editingItem;
+  const isTask = state.modalKind === 'tarea';
   const isEdit = !!it;
   const nameVal = isEdit ? it.name : '';
   const amountVal = isEdit && it.amount != null ? String(it.amount).replace('.', ',') : '';
-  const dateVal = isEdit ? it.due_date : toDateStr(addDays(today,7));
-  const recurrenceVal = isEdit ? it.recurrence : 'mes';
+  const dateVal = isEdit ? it.due_date : defaultDate();
+  const recurrenceVal = isEdit ? it.recurrence : (isTask ? 'no' : 'mes');
   const waChecked = isEdit ? it.notify_whatsapp : true;
   const mailChecked = isEdit ? it.notify_mail : true;
   return `
   <div class="modal-backdrop" data-action="close-modal">
     <div class="modal-box" onclick="event.stopPropagation()">
-      <p class="modal-title">${isEdit ? 'Editar' : 'Añadir nuevo'}</p>
-      <div class="field"><label class="field-label">Nombre</label><input id="new-name" type="text" placeholder="Spotify, alquiler, IVA..." value="${nameVal.replace(/"/g,'&quot;')}"></div>
-      <div class="row2">
-        <div class="field"><label class="field-label">Importe (opcional)</label><input id="new-amount" type="text" placeholder="9,99" value="${amountVal}"></div>
+      <p class="modal-title">${isEdit ? 'Editar' : (isTask ? 'Nuevo recordatorio' : 'Añadir nuevo')}</p>
+      <div class="field"><label class="field-label">Nombre</label><input id="new-name" type="text" placeholder="${isTask ? 'Cita médica, renovar el DNI...' : 'Spotify, alquiler, IVA...'}" value="${esc(nameVal)}"></div>
+      <div class="row2" ${isTask ? 'style="grid-template-columns:1fr;"' : ''}>
+        ${isTask ? '' : `<div class="field"><label class="field-label">Importe (opcional)</label><input id="new-amount" type="text" placeholder="9,99" value="${amountVal}"></div>`}
         <div class="field"><label class="field-label">Fecha</label><input id="new-date" type="date" value="${dateVal}"></div>
       </div>
       <div class="field">
@@ -528,6 +1413,15 @@ function renderModal() {
           <option value="anio" ${recurrenceVal==='anio'?'selected':''}>Cada año</option>
         </select>
       </div>
+      ${!isTask && state.partners.length ? `
+      <div class="field">
+        <label class="field-label">¿Lo compartís con alguien?</label>
+        <select id="new-shared">
+          <option value="">No compartir</option>
+          ${state.partners.map(p => `<option value="${p.id}" ${isEdit && it.shared_partner_id === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}
+        </select>
+        <p class="sub" style="margin:6px 0 0;">Cuando lo marques como pagado, se anota solo como un gasto de ese espacio, repartido en partes iguales.</p>
+      </div>` : ''}
       <label class="chan-option"><input type="checkbox" id="new-chk-wa" ${waChecked?'checked':''}> WhatsApp</label>
       <label class="chan-option"><input type="checkbox" id="new-chk-mail" ${mailChecked?'checked':''}> Mail</label>
       <div style="margin-top:14px;">
@@ -552,10 +1446,13 @@ function attachHandlers() {
       else if (action === 'filter-next') { state.summaryFilter = state.summaryFilter === 'next' ? null : 'next'; render(); }
       else if (action === 'filter-active') { state.summaryFilter = state.summaryFilter === 'active' ? null : 'active'; render(); }
       else if (action === 'filter-overdue') { state.summaryFilter = state.summaryFilter === 'overdue' ? null : 'overdue'; render(); }
-      else if (action === 'open-modal') { state.modalOpen = true; state.editingItem = null; render(); }
+      else if (action === 'filter-today') { state.summaryFilter = state.summaryFilter === 'today' ? null : 'today'; render(); }
+      else if (action === 'filter-week') { state.summaryFilter = state.summaryFilter === 'week' ? null : 'week'; render(); }
+      else if (action === 'open-modal') { state.modalOpen = true; state.editingItem = null; state.modalKind = state.section === 'recordatorios' ? 'tarea' : 'pago'; render(); }
       else if (action === 'open-edit-modal') {
         const id = el.getAttribute('data-id');
         state.editingItem = state.items.find(i => String(i.id) === String(id)) || null;
+        state.modalKind = (state.editingItem && state.editingItem.kind) || 'pago';
         state.modalOpen = true; render();
       }
       else if (action === 'close-modal') { state.modalOpen = false; state.editingItem = null; render(); }
@@ -564,6 +1461,194 @@ function attachHandlers() {
         if (!confirm('¿Eliminar este ítem? No se puede deshacer.')) return;
         const { error } = await sb.from('items').delete().eq('id', id);
         if (error) { showToast('No se pudo eliminar: ' + error.message); return; }
+        await loadItems();
+      }
+      else if (action === 'section-presupuesto') { state.section = 'presupuesto'; state.summaryFilter = null; state.activeTab = 'proximos'; state.notice = ''; render(); }
+      else if (action === 'section-compartido') { state.section = 'compartido'; state.notice = ''; render(); }
+      else if (action === 'select-partner') { state.activePartnerId = el.getAttribute('data-id'); render(); }
+      else if (action === 'open-partner-modal') { state.partnerModal = true; render(); }
+      else if (action === 'close-partner-modal') { state.partnerModal = false; render(); }
+      else if (action === 'save-partner') {
+        const name = document.getElementById('partner-name').value.trim();
+        if (!name) { showToast('Ponle un nombre.'); return; }
+        el.disabled = true;
+        const { data, error } = await sb.from('shared_partners').insert({ user_id: state.session.user.id, name }).select();
+        if (error) { el.disabled = false; showToast('No se pudo guardar: ' + error.message); return; }
+        const newId = data && data[0] && data[0].id;
+        state.partnerModal = false;
+        state.partnersLoaded = false;
+        await loadShared();
+        if (newId) state.activePartnerId = newId;
+        render();
+      }
+      else if (action === 'delete-partner') {
+        const id = el.getAttribute('data-id');
+        const p = state.partners.find(x => x.id === id);
+        if (!confirm('¿Eliminar "' + (p ? p.name : 'este espacio') + '" con las personas y los gastos que tiene adentro? No se puede deshacer.')) return;
+        const { error } = await sb.from('shared_partners').delete().eq('id', id);
+        if (error) { showToast('No se pudo eliminar: ' + error.message); return; }
+        state.activePartnerId = null;
+        state.partnersLoaded = false;
+        await loadShared(); render();
+      }
+      else if (action === 'open-person-modal') { state.personModal = true; state.newPersonColor = PARTNER_COLORS[participantsOf(state.activePartnerId).length % PARTNER_COLORS.length]; render(); }
+      else if (action === 'close-person-modal') { state.personModal = false; render(); }
+      else if (action === 'pick-person-color') { state.newPersonColor = el.getAttribute('data-color'); render(); }
+      else if (action === 'save-person') {
+        const name = document.getElementById('person-name').value.trim();
+        if (!name) { showToast('Ponle un nombre.'); return; }
+        el.disabled = true;
+        const { error } = await sb.from('shared_participants').insert({ partner_id: state.activePartnerId, name, color: state.newPersonColor });
+        if (error) { el.disabled = false; showToast('No se pudo guardar: ' + error.message); return; }
+        state.personModal = false;
+        state.partnersLoaded = false;
+        await loadShared(); render();
+      }
+      else if (action === 'delete-person') {
+        const id = el.getAttribute('data-id');
+        if (!confirm('¿Quitar a esta persona? Sus gastos ya cargados quedan igual, en adelanto el reparto se calcula sin ella.')) return;
+        const { error } = await sb.from('shared_participants').delete().eq('id', id);
+        if (error) { showToast('No se pudo quitar: ' + error.message); return; }
+        state.partnersLoaded = false;
+        await loadShared(); render();
+      }
+      else if (action === 'open-expense-modal') {
+        const id = el.getAttribute('data-id');
+        const editing = id ? (state.sharedExpenses.find(x => String(x.id) === String(id)) || null) : null;
+        state.expenseModal = { editing };
+        if (editing && editing.shares) { state.splitMode = 'custom'; state.customShares = { ...editing.shares }; }
+        else { state.splitMode = 'equal'; state.customShares = {}; }
+        render();
+      }
+      else if (action === 'close-expense-modal') { state.expenseModal = null; render(); }
+      else if (action === 'split-mode') {
+        const mode = el.getAttribute('data-mode');
+        if (mode === 'custom' && state.splitMode !== 'custom') {
+          const people = participantsOf(state.activePartnerId);
+          const N = people.length + 1;
+          const base = Math.floor(100 / N);
+          state.customShares = { yo: base + (100 - base * N) };
+          people.forEach(p => { state.customShares[p.name] = base; });
+        }
+        state.splitMode = mode;
+        render();
+      }
+      else if (action === 'save-expense') {
+        const description = document.getElementById('exp-desc').value.trim();
+        const amount = parseAmount(document.getElementById('exp-amount').value);
+        const expense_date = document.getElementById('exp-date').value || toDateStr(today);
+        const paid_by = document.getElementById('exp-paidby').value;
+        if (!description) { showToast('Contá qué fue el gasto.'); return; }
+        if (!(amount > 0)) { showToast('Pon un importe mayor que 0.'); return; }
+        let shares = null;
+        if (state.splitMode === 'custom') {
+          shares = {};
+          Object.keys(state.customShares).forEach(k => { shares[k] = Number(state.customShares[k]) || 0; });
+          const sum = Object.values(shares).reduce((a, b) => a + b, 0);
+          if (Math.abs(sum - 100) > 0.5) { showToast('Los porcentajes tienen que sumar 100 (suman ' + fmtMoney(sum) + ').'); return; }
+        }
+        const recEl = document.getElementById('exp-recurrence');
+        const recurrence = recEl && !recEl.disabled ? recEl.value : (state.expenseModal.editing ? state.expenseModal.editing.recurrence : 'no');
+        const toPagosEl = document.getElementById('exp-to-pagos');
+        const toPagos = toPagosEl ? toPagosEl.checked : false;
+        const editing = state.expenseModal.editing;
+        const yaVinculado = editing && editing.created_item_id;
+        el.disabled = true;
+        let created_item_id = editing ? editing.created_item_id : null;
+        if (toPagos && !yaVinculado) {
+          // Crea el pago vinculado, tanto si el gasto es nuevo como si se edita uno que todavía no estaba trasladado.
+          const anchor_day = recurrence !== 'no' ? parseInt(expense_date.slice(8, 10), 10) : null;
+          const due_date = recurrence === 'no' ? expense_date : toDateStr(nextOccurrence({ due_date: expense_date, recurrence, anchor_day }));
+          const { data: itemData, error: itemErr } = await sb.from('items').insert({
+            user_id: state.session.user.id, name: description, amount, due_date, recurrence, anchor_day,
+            kind: 'pago', notify_whatsapp: false, notify_mail: true, shared_partner_id: state.activePartnerId,
+            paid: recurrence === 'no', paid_on: recurrence === 'no' ? expense_date : null
+          }).select();
+          if (itemErr) { el.disabled = false; showToast('No se pudo trasladar a Gastos: ' + itemErr.message); return; }
+          created_item_id = itemData && itemData[0] && itemData[0].id;
+        }
+        const row = { description, amount, expense_date, paid_by, shares, recurrence, created_item_id };
+        let error;
+        if (editing) ({ error } = await sb.from('shared_expenses').update(row).eq('id', editing.id));
+        else ({ error } = await sb.from('shared_expenses').insert({ ...row, user_id: state.session.user.id, partner_id: state.activePartnerId }));
+        if (error) { el.disabled = false; showToast('No se pudo guardar: ' + error.message); return; }
+        state.expenseModal = null;
+        state.partnersLoaded = false;
+        await loadShared();
+        await loadItems(); // por si se creó un pago vinculado, que Pagos y Presupuesto ya lo vean
+        render();
+      }
+      else if (action === 'delete-expense') {
+        const id = el.getAttribute('data-id');
+        if (!confirm('¿Eliminar este gasto? No se puede deshacer.')) return;
+        const { error } = await sb.from('shared_expenses').delete().eq('id', id);
+        if (error) { showToast('No se pudo eliminar: ' + error.message); return; }
+        state.partnersLoaded = false;
+        await loadShared(); render();
+      }
+      
+      else if (action === 'month-prev') { shiftMonth(-1); }
+      else if (action === 'month-next') { shiftMonth(1); }
+      else if (action === 'month-today') { changeMonth(currentYm()); }
+      else if (action === 'open-entry') {
+        const id = el.getAttribute('data-id');
+        const editing = id ? (state.entries.find(x => String(x.id) === String(id)) || null) : null;
+        state.entryModal = { type: editing ? editing.type : el.getAttribute('data-type'), editing }; render();
+      }
+      else if (action === 'close-entry') { state.entryModal = null; render(); }
+      else if (action === 'entry-chip') { document.getElementById('entry-name').value = el.getAttribute('data-name'); }
+      else if (action === 'save-entry') {
+        const m = state.entryModal; if (!m) return;
+        const name = document.getElementById('entry-name').value.trim();
+        const amount = parseAmount(document.getElementById('entry-amount').value);
+        if (!name) { showToast('Ponle un nombre.'); return; }
+        if (!(amount > 0)) { showToast('Pon un importe mayor que 0.'); return; }
+        const scopeEl = document.getElementById('entry-scope');
+        const scope = scopeEl ? scopeEl.value : 'all';
+        const row = { type: m.type, name, amount };
+        if (scope === 'only') row.month = state.viewMonth;
+        else if (m.editing && m.editing.month) row.month = null;
+        el.disabled = true;
+        let error;
+        if (m.editing) ({ error } = await sb.from('budget_entries').update(row).eq('id', m.editing.id));
+        else ({ error } = await sb.from('budget_entries').insert({ ...row, user_id: state.session.user.id }));
+        if (error) { el.disabled = false; showToast('No se pudo guardar: ' + error.message); return; }
+        state.entryModal = null;
+        await loadEntries(); render();
+      }
+      else if (action === 'delete-entry') {
+        const id = el.getAttribute('data-id');
+        if (!confirm('¿Eliminar? No se puede deshacer.')) return;
+        const { error } = await sb.from('budget_entries').delete().eq('id', id);
+        if (error) { showToast('No se pudo eliminar: ' + error.message); return; }
+        await loadEntries(); render();
+      }
+      else if (action === 'section-pagos') { state.section = 'pagos'; state.summaryFilter = null; state.activeTab = 'proximos'; state.notice = ''; render(); }
+      else if (action === 'section-recordatorios') { state.section = 'recordatorios'; state.summaryFilter = null; state.activeTab = 'proximos'; state.notice = ''; render(); }
+      else if (action === 'open-templates') { state.templatesOpen = true; state.templatePack = null; render(); }
+      else if (action === 'close-templates') { state.templatesOpen = false; state.templatePack = null; render(); }
+      else if (action === 'pick-pack') { state.templatePack = el.getAttribute('data-pack'); render(); }
+      else if (action === 'back-packs') { state.templatePack = null; render(); }
+      else if (action === 'add-template-items') {
+        const pack = TEMPLATE_PACKS[state.templatePack];
+        if (!pack) return;
+        const isTask = state.section === 'recordatorios';
+        const tpls = pack[isTask ? 'tareas' : 'pagos'] || [];
+        const kind = isTask ? 'tarea' : 'pago';
+        const rows = [];
+        tpls.forEach((tpl, i) => {
+          const chk = document.getElementById('tpl-chk-' + i);
+          if (!chk || !chk.checked) return;
+          const nm = (document.getElementById('tpl-name-' + i).value || '').trim() || tpl.name;
+          const dt = document.getElementById('tpl-date-' + i).value || defaultDate();
+          rows.push({ user_id: state.session.user.id, name: nm, amount: null, due_date: dt, recurrence: tpl.recurrence, notify_whatsapp: false, notify_mail: true, kind, anchor_day: tpl.recurrence !== 'no' ? parseInt(dt.slice(8, 10), 10) : null });
+        });
+        if (!rows.length) { showToast('Marca al menos una opción.'); return; }
+        el.disabled = true;
+        const { error } = await sb.from('items').insert(rows);
+        if (error) { el.disabled = false; showToast('No se pudo añadir: ' + error.message); return; }
+        state.notice = 'Añadimos ' + rows.length + (isTask ? ' recordatorios' : ' pagos') + ' del pack "' + esc(pack.title) + '". ' + (isTask ? 'Ajusta nombres y fechas' : 'Pon los importes y ajusta las fechas') + ' cuando quieras con el lápiz ✏️.';
+        state.templatesOpen = false; state.templatePack = null;
         await loadItems();
       }
       else if (action === 'go-profile') {
@@ -575,14 +1660,13 @@ function attachHandlers() {
       }
       else if (action === 'save-profile') {
         const phone = document.getElementById('profile-phone').value.trim();
-        const avatar_url = document.getElementById('profile-avatar').value.trim();
         state.busy = true; state.profileMsg = ''; state.profileError = ''; render();
         const { error } = await sb.from('profiles').upsert({
-          id: state.session.user.id, phone: phone || null, avatar_url: avatar_url || null
+          id: state.session.user.id, phone: phone || null, avatar_url: state.profile.avatar_url || null
         });
         state.busy = false;
         if (error) { state.profileError = 'No se pudo guardar: ' + error.message; render(); return; }
-        state.profile = { phone, avatar_url };
+        state.profile.phone = phone;
         state.profileMsg = 'Listo, guardado.';
         render();
       }
@@ -590,7 +1674,7 @@ function attachHandlers() {
         const p1 = document.getElementById('profile-new-password').value;
         const p2 = document.getElementById('profile-new-password-2').value;
         state.profileMsg = ''; state.profileError = '';
-        if (!p1 || !p2) { state.profileError = 'Completá los dos campos de contraseña.'; render(); return; }
+        if (!p1 || !p2) { state.profileError = 'Completa los dos campos de contraseña.'; render(); return; }
         if (p1 !== p2) { state.profileError = 'Las contraseñas no coinciden.'; render(); return; }
         state.busy = true; render();
         const { error } = await sb.auth.updateUser({ password: p1 });
@@ -601,7 +1685,7 @@ function attachHandlers() {
       }
       else if (action === 'sign-out') {
         await sb.auth.signOut();
-        state.session = null; state.items = []; state.screen = 'plan'; render();
+        state.session = null; state.items = []; state.notice = ''; state.entries = []; state.entriesLoaded = false; state.entriesError = ''; state.entryModal = null; state.viewMonth = currentYm(); state.partners = []; state.sharedExpenses = []; state.partnersLoaded = false; state.activePartnerId = null; state.partnerModal = false; state.expenseModal = null; state.personModal = false; state.sharedParticipants = []; state.splitMode = 'equal'; state.customShares = {}; state.screen = 'plan'; render();
       }
       else if (action === 'do-signup') {
         const email = document.getElementById('auth-email').value.trim();
@@ -614,7 +1698,7 @@ function attachHandlers() {
         if (data.session) {
           state.session = data.session; state.screen = 'channels'; render();
         } else {
-          state.confirmMsg = 'Te mandamos un mail de confirmación. Confirmalo y después iniciá sesión desde acá.';
+          state.confirmMsg = 'Te mandamos un mail de confirmación. Confírmalo y después inicia sesión desde aquí.';
           state.authMode = 'signin'; render();
         }
       }
@@ -640,34 +1724,72 @@ function attachHandlers() {
       }
       else if (action === 'mark-paid') {
         const id = el.getAttribute('data-id');
+        const item = state.items.find(i => String(i.id) === String(id));
         const { error } = await sb.from('items').update({ paid: true, paid_on: toDateStr(today) }).eq('id', id);
         if (error) { showToast('No se pudo actualizar: ' + error.message); return; }
+        // Si se repite, se crea solo el siguiente (una sola vez, aunque se toque dos veces)
+        if (item && item.recurrence && item.recurrence !== 'no') {
+          const { data: kids } = await sb.from('items').select('id').eq('renewed_from', id).eq('paid', false);
+          if (!kids || kids.length === 0) {
+            const n = nextOccurrence(item);
+            const { error: e2 } = await sb.from('items').insert({
+              user_id: state.session.user.id, name: item.name, amount: item.amount, due_date: toDateStr(n),
+              recurrence: item.recurrence, notify_whatsapp: item.notify_whatsapp, notify_mail: item.notify_mail,
+              kind: item.kind || 'pago', renewed_from: item.id,
+              anchor_day: item.anchor_day || parseInt(item.due_date.slice(8, 10), 10)
+            });
+            if (e2) showToast('Se marcó, pero no se pudo crear la próxima fecha: ' + e2.message);
+          }
+        }
+        // Si el pago está vinculado a un espacio de Gastos compartidos, se anota solo ahí (sin cargarlo dos veces)
+        if (item && item.kind !== 'tarea' && item.shared_partner_id) {
+          if (item.amount > 0) {
+            const { error: e3 } = await sb.from('shared_expenses').insert({
+              user_id: state.session.user.id, partner_id: item.shared_partner_id,
+              description: item.name, amount: item.amount, paid_by: 'yo',
+              expense_date: toDateStr(today), from_item_id: item.id
+            });
+            if (e3) showToast('Se marcó como pagado, pero no se pudo anotar en compartido: ' + e3.message);
+          } else {
+            showToast('Se marcó como pagado. Como no tiene importe, no se anotó en el espacio compartido.');
+          }
+          await loadShared();
+        }
         await loadItems();
       }
       else if (action === 'undo-paid') {
         const id = el.getAttribute('data-id');
         const { error } = await sb.from('items').update({ paid: false, paid_on: null }).eq('id', id);
         if (error) { showToast('No se pudo actualizar: ' + error.message); return; }
+        // Deshace la renovación automática, salvo que la siguiente ya se haya pagado
+        await sb.from('items').delete().eq('renewed_from', id).eq('paid', false);
+        // Deshace el gasto compartido que se había anotado solo, si lo hubo
+        await sb.from('shared_expenses').delete().eq('from_item_id', id);
+        await loadShared();
         await loadItems();
       }
       else if (action === 'save-item') {
         const name = document.getElementById('new-name').value.trim();
         if (!name) return;
-        const amountRaw = document.getElementById('new-amount').value.replace(',', '.');
-        const amount = amountRaw ? parseFloat(amountRaw) : null;
-        const dateVal = document.getElementById('new-date').value || toDateStr(addDays(today, 7));
+        const amtEl = document.getElementById('new-amount');
+        const parsedAmt = amtEl ? parseAmount(amtEl.value) : NaN;
+        const amount = (state.modalKind !== 'tarea' && !isNaN(parsedAmt)) ? parsedAmt : null;
+        const dateVal = document.getElementById('new-date').value || defaultDate();
         const recurrence = document.getElementById('new-recurrence').value;
         const notify_whatsapp = document.getElementById('new-chk-wa').checked;
         const notify_mail = document.getElementById('new-chk-mail').checked;
+        const anchor_day = recurrence !== 'no' ? parseInt(dateVal.slice(8, 10), 10) : null;
+        const sharedEl = document.getElementById('new-shared');
+        const shared_partner_id = sharedEl && sharedEl.value ? sharedEl.value : null;
         state.busy = true; render();
         let error;
         if (state.editingItem) {
           ({ error } = await sb.from('items').update({
-            name, amount, due_date: dateVal, recurrence, notify_whatsapp, notify_mail
+            name, amount, due_date: dateVal, recurrence, notify_whatsapp, notify_mail, anchor_day, shared_partner_id
           }).eq('id', state.editingItem.id));
         } else {
           ({ error } = await sb.from('items').insert({
-            user_id: state.session.user.id, name, amount, due_date: dateVal, recurrence, notify_whatsapp, notify_mail
+            user_id: state.session.user.id, name, amount, due_date: dateVal, recurrence, notify_whatsapp, notify_mail, kind: state.modalKind, anchor_day, shared_partner_id
           }));
         }
         state.busy = false;
