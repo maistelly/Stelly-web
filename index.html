@@ -450,6 +450,7 @@ const RECURRENCE_LABEL = { mes: 'cada mes', trimestre: 'cada trimestre', anio: '
 let state = {
   screen: 'loading', // loading, plan, auth, channels, app
   authMode: 'signup',
+  chosenPlan: 'trial', // 'free' o 'trial', el que se elige en la pantalla del plan
   session: null,
   items: [],
   activeTab: 'proximos',
@@ -459,7 +460,7 @@ let state = {
   busy: false,
   authError: '',
   confirmMsg: '',
-  profile: { phone: '', avatar_url: '' },
+  profile: { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null },
   profileMsg: '',
   profileError: '',
   section: 'pagos', // pagos, recordatorios
@@ -484,6 +485,10 @@ let state = {
   newPersonColor: '#B85C38',
   splitMode: 'equal', // 'equal' o 'custom', se usa solo mientras se completa el modal de gasto
   customShares: {},
+  itemSharedId: '', // espacio elegido en "¿Lo compartís con alguien?" del modal de Pagos
+  itemPaidBy: 'yo',
+  itemSplitMode: 'equal',
+  itemShares: {},
 };
 
 function urgency(item) {
@@ -575,9 +580,21 @@ async function handleAvatarChange(e) {
 async function loadProfile() {
   const { data, error } = await sb.from('profiles').select('*').eq('id', state.session.user.id).maybeSingle();
   if (!error && data) {
-    state.profile = { phone: data.phone || '', avatar_url: data.avatar_url || '' };
+    state.profile = { phone: data.phone || '', avatar_url: data.avatar_url || '', plan: data.plan || 'free', trial_ends_at: data.trial_ends_at || null };
   }
   render();
+}
+
+// Premium de verdad, o todavía dentro de los 15 días de prueba
+function hasPremium() {
+  const pl = state.profile.plan;
+  if (pl === 'paid') return true;
+  if (pl === 'trial') return !!state.profile.trial_ends_at && toDateStr(today) <= state.profile.trial_ends_at;
+  return false;
+}
+function trialDaysLeft() {
+  if (!state.profile.trial_ends_at) return 0;
+  return Math.max(0, daysBetween(today, new Date(state.profile.trial_ends_at + 'T00:00:00')));
 }
 
 async function init() {
@@ -586,6 +603,7 @@ async function init() {
     state.session = session;
     state.screen = 'app';
     render();
+    await loadProfile();
     await loadItems();
   } else {
     state.screen = 'plan';
@@ -614,22 +632,34 @@ function stepsHtml(step) {
 const BRAND_H1 = '<h1 class="brand"><svg class="jasmine-icon" viewBox="0 0 40 40" aria-hidden="true"><g><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(72 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(144 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(216 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(288 20 20)"/><circle cx="20" cy="20" r="4.2" fill="#E8C767" stroke="#B99B5B" stroke-width="0.6"/></g></svg>STELLY</h1>';
 
 function renderPlan() {
+  const chosen = state.chosenPlan;
   return `
   <div class="wrap">
     ${BRAND_H1}
     ${stepsHtml(1)}
-    <div class="card">
-      <h2 class="title">Un plan único, simple</h2>
-      <p class="sub">Empieza a organizarte desde el primer día.</p>
+    <div class="card" style="border:2px solid ${chosen === 'free' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;margin-bottom:12px;" data-action="pick-plan" data-plan="free">
+      <h2 class="title">Gratis</h2>
+      <p class="sub">Organiza tus gastos y no te olvides de nada.</p>
+      <div class="price-row"><span class="amount">0 €</span><span class="period">para siempre</span></div>
+      <ul class="feat">
+        <li><span class="dot"></span>Gastos ilimitados, con avisos por mail</li>
+        <li><span class="dot"></span>Recordatorios con hora</li>
+        <li><span class="dot"></span>Sin Gastos compartidos ni Cuentas</li>
+      </ul>
+    </div>
+    <div class="card" style="border:2px solid ${chosen === 'trial' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;" data-action="pick-plan" data-plan="trial">
+      <h2 class="title">Premium</h2>
+      <p class="sub">15 días gratis, después sigues si quieres.</p>
       <div class="price-row"><span class="amount">4 €</span><span class="period">por mes</span></div>
       <ul class="feat">
-        <li><span class="dot"></span>Ítems ilimitados: suscripciones, alquiler, fechas fiscales, lo que sea</li>
-        <li><span class="dot"></span>Avisos por WhatsApp y mail</li>
+        <li><span class="dot"></span>Todo lo del plan Gratis</li>
+        <li><span class="dot"></span>Gastos compartidos, con quien quieras</li>
+        <li><span class="dot"></span>Cuentas: ingresos, gastos y ahorro del mes</li>
         <li><span class="dot"></span>Cancelas cuando quieras, sin permanencia</li>
       </ul>
-      <p class="sub" style="margin-bottom:16px;">El cobro todavía no está activado mientras probamos. Por ahora es gratis mientras validamos la idea.</p>
-      <button class="btn-primary" data-action="go-auth">Continuar</button>
     </div>
+    <p class="sub" style="margin:14px 0 16px;">El cobro todavía no está activado mientras probamos. Elijas el que elijas, por ahora es gratis mientras validamos la idea.</p>
+    <button class="btn-primary" data-action="go-auth">Continuar${chosen === 'trial' ? ' con los 15 días gratis' : ' gratis'}</button>
   </div>`;
 }
 
@@ -729,6 +759,7 @@ function renderTopBar() {
     <header class="app-header">
       <span class="brand-name"><svg class="jasmine-icon jasmine-icon-sm" viewBox="0 0 40 40" aria-hidden="true"><g><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(72 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(144 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(216 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(288 20 20)"/><circle cx="20" cy="20" r="4.2" fill="#E8C767" stroke="#B99B5B" stroke-width="0.6"/></g></svg>STELLY</span>
       <div style="display:flex;align-items:center;gap:14px;">
+        ${state.profile.plan === 'trial' && hasPremium() ? `<span class="sub" style="margin:0;">${trialDaysLeft()} días de prueba</span>` : ''}
         <button class="signout-link" data-action="go-profile">Mi perfil</button>
         <button class="signout-link" data-action="sign-out">Cerrar sesión</button>
       </div>
@@ -744,7 +775,19 @@ function renderTopBar() {
     ${state.notice ? `<p class="sub" style="color:var(--green-ink);background:var(--green-bg);padding:10px 12px;border-radius:10px;">${state.notice}</p>` : ''}`;
 }
 
+function renderUpsell(feature) {
+  const trialVencido = state.profile.plan === 'trial' && !hasPremium();
+  return `<div class="card">
+    <p class="modal-title" style="margin-bottom:4px;">${feature} es parte del plan Premium</p>
+    ${trialVencido
+      ? `<p class="sub" style="margin-bottom:14px;">Tu prueba de 15 días ya terminó. Cuando el cobro esté activo, vas a poder seguir usándolo.</p>`
+      : `<p class="sub" style="margin-bottom:14px;">Pruébalo gratis 15 días, sin tarjeta. Después sigues si quieres.</p>
+         <button class="btn-primary" data-action="start-trial">Empezar prueba gratis</button>`}
+  </div>`;
+}
+
 function renderBudgetScreen() {
+  if (!hasPremium()) return `<div class="wrap-wide">${renderTopBar()}${renderUpsell('Cuentas')}</div>`;
   return `<div class="wrap-wide">${renderTopBar()}${renderBudget()}</div>${state.entryModal ? renderEntryModal() : ''}`;
 }
 
@@ -765,6 +808,7 @@ function computeBalances(spaceId) {
   const perPersonLines = {}; // el detalle de gastos detrás de cada saldo, siempre calculado a partir de "rows"
   people.forEach(p => { perPerson[p.id] = 0; perPersonLines[p.id] = []; });
   rows.forEach(e => {
+    if (e.paid_by === 'split') return; // cada uno puso su parte directo, no le debe nada a nadie
     const amount = Number(e.amount);
     const pct = (name) => e.shares && e.shares[name] != null ? Number(e.shares[name]) / 100 : 1 / N;
     if (e.paid_by === 'yo') {
@@ -788,6 +832,7 @@ function computeBalances(spaceId) {
 }
 
 function renderSharedScreen() {
+  if (!hasPremium()) return `<div class="wrap-wide">${renderTopBar()}${renderUpsell('Gastos compartidos')}</div>`;
   if (state.sharedError) {
     return `<div class="wrap-wide">${renderTopBar()}<div class="card"><p class="sub" style="margin:0;">No se pudo cargar (${esc(state.sharedError)}). Falta ejecutar el SQL de gastos compartidos en Supabase.</p></div></div>${state.partnerModal ? renderPartnerModal() : ''}`;
   }
@@ -843,6 +888,23 @@ function renderSharedScreen() {
       </div>
     </div>` : ''}
 
+    ${(() => {
+      const pendientes = state.items.filter(it => it.shared_partner_id === p.id && !it.paid).sort((a, b) => a.due_date.localeCompare(b.due_date));
+      if (!pendientes.length) return '';
+      const quienLabel = (pb) => pb === 'split' ? 'pago directo' : (pb === 'yo' || !pb ? 'pagás vos' : 'paga ' + esc(pb));
+      return `<div class="card">
+        <p class="modal-title" style="font-size:15px;margin-bottom:4px;">Pendientes en Gastos</p>
+        <p class="sub" style="margin:0 0 10px;">Todavía no se pagaron, así que no suman al saldo de arriba. Se anotan solos cuando los marques como pagados en Gastos.</p>
+        ${pendientes.map(it => `<div class="exp-row projected">
+          <div class="item-mid">
+            <p class="name">${esc(it.name)}</p>
+            <p class="meta">${quienLabel(it.shared_paid_by)} · vence el ${fmtDate(new Date(it.due_date + 'T00:00:00'))}</p>
+          </div>
+          <div class="item-amount">${it.amount ? fmtMoney(it.amount) + ' €' : 'Sin importe'}</div>
+        </div>`).join('')}
+      </div>`;
+    })()}
+
     <div class="list-header">
       <p>Gastos de ${esc(p.name)}</p>
       ${people.length ? `<button class="btn-add" data-action="open-expense-modal">+ Añadir gasto</button>` : ''}
@@ -852,11 +914,12 @@ function renderSharedScreen() {
       ${!people.length ? `<div class="empty-state"><p>Agregá a alguien primero para poder cargar un gasto.</p></div>`
         : rows.length ? rows.map(ex => {
         const payer = people.find(x => x.name === ex.paid_by);
-        const quien = ex.paid_by === 'yo' ? 'Pagaste tú' : `Pagó ${esc(ex.paid_by)}`;
+        const quien = ex.paid_by === 'split' ? 'Pago directo' : (ex.paid_by === 'yo' ? 'Pagaste tú' : `Pagó ${esc(ex.paid_by)}`);
+        const reparto = ex.paid_by === 'split' ? 'sin saldo pendiente' : (ex.shares ? 'reparto personalizado' : `a partes iguales entre ${N}`);
         return `<div class="exp-row">
           <div class="item-mid">
             <p class="name">${payer ? dot(payer.color) : ''}${esc(ex.description)}</p>
-            <p class="meta">${quien} · a partes iguales entre ${N} · ${fmtDate(new Date(ex.expense_date + 'T00:00:00'))}${RECURRENCE_LABEL[ex.recurrence] ? ' · se repite ' + RECURRENCE_LABEL[ex.recurrence] : ''}${ex.from_item_id ? ' · desde Gastos' : (ex.created_item_id ? ' · también en Gastos' : '')}</p>
+            <p class="meta">${quien} · ${reparto} · ${fmtDate(new Date(ex.expense_date + 'T00:00:00'))}${RECURRENCE_LABEL[ex.recurrence] ? ' · se repite ' + RECURRENCE_LABEL[ex.recurrence] : ''}${ex.from_item_id ? ' · desde Gastos' : (ex.created_item_id ? ' · también en Gastos' : '')}</p>
           </div>
           <div class="item-amount">${fmtMoney(ex.amount)} €</div>
           ${btns(ex.id)}
@@ -930,9 +993,12 @@ function renderExpenseModal() {
         <select id="exp-paidby">
           <option value="yo" ${paidBy === 'yo' ? 'selected' : ''}>Yo</option>
           ${people.map(x => `<option value="${esc(x.name)}" ${paidBy === x.name ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}
+          <option value="split" ${paidBy === 'split' ? 'selected' : ''}>Pago directo</option>
         </select>
       </div>
-      <label class="field-label">¿Cómo se reparte?</label>
+      ${paidBy === 'split'
+        ? `<p class="sub" style="margin:0 0 14px;">Cada uno le paga directo su parte a quien corresponda. No queda nadie debiéndole nada a nadie por este gasto.</p>`
+        : `<label class="field-label">¿Cómo se reparte?</label>
       <div class="mode-toggle">
         <button type="button" class="${mode === 'equal' ? 'active' : ''}" data-action="split-mode" data-mode="equal">Partes iguales</button>
         <button type="button" class="${mode === 'custom' ? 'active' : ''}" data-action="split-mode" data-mode="custom">Personalizado</button>
@@ -944,7 +1010,7 @@ function renderExpenseModal() {
             ${people.map(x => shareRow(x.name, esc(x.name), x.color)).join('')}
           </div>
           <p class="share-total ${sumOk ? 'ok' : 'bad'}">Suman ${fmtMoney(sum)}%${sumOk ? ' ✓' : ' — tiene que sumar 100%'}</p>
-          <div style="height:8px;"></div>`}
+          <div style="height:8px;"></div>`}`}
       <div class="field">
         <label class="field-label">¿Se repite?</label>
         <select id="exp-recurrence" ${alreadyLinked ? 'disabled' : ''}>
@@ -1395,6 +1461,19 @@ function renderModal() {
   const dateVal = isEdit ? it.due_date : defaultDate();
   const timeVal = isEdit && it.due_time ? it.due_time.slice(0, 5) : '';
   const recurrenceVal = isEdit ? it.recurrence : (isTask ? 'no' : 'mes');
+  const sharedId = state.itemSharedId;
+  const sharedPeople = sharedId ? participantsOf(sharedId) : [];
+  const sharedN = sharedPeople.length + 1;
+  const itemMode = state.itemSplitMode;
+  const itemShares = state.itemShares;
+  const itemSum = Object.values(itemShares).reduce((a, b) => a + (Number(b) || 0), 0);
+  const itemSumOk = Math.abs(itemSum - 100) < 0.05;
+  const itemShareRow = (key, label, dotColor) => `
+    <div class="share-row">
+      <div class="share-name">${dotColor ? `<span class="partner-dot" style="background:${dotColor};"></span>` : ''}${label}</div>
+      <input type="number" min="0" max="100" step="1" value="${itemShares[key] != null ? itemShares[key] : ''}" oninput="state.itemShares['${key.replace(/'/g, "\\'")}'] = this.value;" onblur="render();">
+      <span class="sub" style="width:14px;">%</span>
+    </div>`;
   const waChecked = isEdit ? it.notify_whatsapp : true;
   const mailChecked = isEdit ? it.notify_mail : true;
   return `
@@ -1421,12 +1500,36 @@ function renderModal() {
       ${!isTask && state.partners.length ? `
       <div class="field">
         <label class="field-label">¿Lo compartís con alguien?</label>
-        <select id="new-shared">
+        <select id="new-shared" onchange="state.itemSharedId = this.value; if (this.value) { const pp = participantsOf(this.value); const base = Math.floor(1000 / (pp.length + 1)) / 10; state.itemShares = { yo: base + (100 - base * (pp.length + 1)) }; pp.forEach(p => { state.itemShares[p.name] = base; }); } state.itemSplitMode = 'equal'; render();">
           <option value="">No compartir</option>
-          ${state.partners.map(p => `<option value="${p.id}" ${isEdit && it.shared_partner_id === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}
+          ${state.partners.map(p => `<option value="${p.id}" ${sharedId === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}
         </select>
-        <p class="sub" style="margin:6px 0 0;">Cuando lo marques como pagado, se anota solo como un gasto de ese espacio, repartido en partes iguales.</p>
-      </div>` : ''}
+        <p class="sub" style="margin:6px 0 0;">Se anota en ese espacio recién cuando lo marques como pagado, no ahora al guardarlo. Cada vez que se repita y lo pagues, se vuelve a anotar.</p>
+      </div>
+      ${sharedId ? `
+      <div class="field">
+        <label class="field-label">¿Quién lo va a pagar?</label>
+        <select id="item-paidby" onchange="state.itemPaidBy = this.value; render();">
+          <option value="yo" ${state.itemPaidBy === 'yo' ? 'selected' : ''}>Yo</option>
+          ${sharedPeople.map(x => `<option value="${esc(x.name)}" ${state.itemPaidBy === x.name ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}
+          <option value="split" ${state.itemPaidBy === 'split' ? 'selected' : ''}>Pago directo</option>
+        </select>
+      </div>
+      ${state.itemPaidBy === 'split'
+        ? `<p class="sub" style="margin:0 0 14px;">Cada uno le paga directo su parte a quien corresponda. No queda nadie debiéndole nada a nadie por este gasto.</p>`
+        : `<label class="field-label">¿Cómo se reparte?</label>
+      <div class="mode-toggle">
+        <button type="button" class="${itemMode === 'equal' ? 'active' : ''}" data-action="item-split-mode" data-mode="equal">Partes iguales</button>
+        <button type="button" class="${itemMode === 'custom' ? 'active' : ''}" data-action="item-split-mode" data-mode="custom">Personalizado</button>
+      </div>
+      ${itemMode === 'equal'
+        ? `<p class="sub" style="margin:0 0 14px;">Se reparte en partes iguales entre los ${sharedN} (${fmtMoney(100 / sharedN)}% cada uno).</p>`
+        : `<div style="margin-bottom:6px;">
+            ${itemShareRow('yo', 'Yo', null)}
+            ${sharedPeople.map(x => itemShareRow(x.name, esc(x.name), x.color)).join('')}
+          </div>
+          <p class="share-total ${itemSumOk ? 'ok' : 'bad'}">Suman ${fmtMoney(itemSum)}%${itemSumOk ? ' ✓' : ' — tiene que sumar 100%'}</p>
+          <div style="height:8px;"></div>`}`}` : ''}` : ''}
       <label class="chan-option"><input type="checkbox" id="new-chk-wa" ${waChecked?'checked':''}> WhatsApp</label>
       <label class="chan-option"><input type="checkbox" id="new-chk-mail" ${mailChecked?'checked':''}> Mail</label>
       <div style="margin-top:14px;">
@@ -1442,6 +1545,13 @@ function attachHandlers() {
       const action = el.getAttribute('data-action');
 
       if (action === 'go-plan') { state.screen = 'plan'; render(); }
+      else if (action === 'pick-plan') { state.chosenPlan = el.getAttribute('data-plan'); render(); }
+      else if (action === 'start-trial') {
+        const trial_ends_at = toDateStr(addDays(today, 15));
+        const { error } = await sb.from('profiles').upsert({ id: state.session.user.id, plan: 'trial', trial_ends_at });
+        if (error) { showToast('No se pudo activar la prueba: ' + error.message); return; }
+        await loadProfile();
+      }
       else if (action === 'go-auth') { state.screen = 'auth'; render(); }
       else if (action === 'auth-mode-signup') { state.authMode = 'signup'; state.authError=''; state.confirmMsg=''; render(); }
       else if (action === 'auth-mode-signin') { state.authMode = 'signin'; state.authError=''; state.confirmMsg=''; render(); }
@@ -1453,11 +1563,20 @@ function attachHandlers() {
       else if (action === 'filter-overdue') { state.summaryFilter = state.summaryFilter === 'overdue' ? null : 'overdue'; render(); }
       else if (action === 'filter-today') { state.summaryFilter = state.summaryFilter === 'today' ? null : 'today'; render(); }
       else if (action === 'filter-week') { state.summaryFilter = state.summaryFilter === 'week' ? null : 'week'; render(); }
-      else if (action === 'open-modal') { state.modalOpen = true; state.editingItem = null; state.modalKind = state.section === 'recordatorios' ? 'tarea' : 'pago'; render(); }
+      else if (action === 'open-modal') {
+        state.modalOpen = true; state.editingItem = null; state.modalKind = state.section === 'recordatorios' ? 'tarea' : 'pago';
+        state.itemSharedId = ''; state.itemPaidBy = 'yo'; state.itemSplitMode = 'equal'; state.itemShares = {};
+        render();
+      }
       else if (action === 'open-edit-modal') {
         const id = el.getAttribute('data-id');
         state.editingItem = state.items.find(i => String(i.id) === String(id)) || null;
         state.modalKind = (state.editingItem && state.editingItem.kind) || 'pago';
+        const it = state.editingItem;
+        state.itemSharedId = (it && it.shared_partner_id) || '';
+        state.itemPaidBy = (it && it.shared_paid_by) || 'yo';
+        state.itemSplitMode = (it && it.split_type) || 'equal';
+        state.itemShares = (it && it.shares) ? { ...it.shares } : {};
         state.modalOpen = true; render();
       }
       else if (action === 'close-modal') { state.modalOpen = false; state.editingItem = null; render(); }
@@ -1538,6 +1657,18 @@ function attachHandlers() {
         state.splitMode = mode;
         render();
       }
+      else if (action === 'item-split-mode') {
+        const mode = el.getAttribute('data-mode');
+        if (mode === 'custom' && state.itemSplitMode !== 'custom') {
+          const people = participantsOf(state.itemSharedId);
+          const N = people.length + 1;
+          const base = Math.floor(100 / N);
+          state.itemShares = { yo: base + (100 - base * N) };
+          people.forEach(p => { state.itemShares[p.name] = base; });
+        }
+        state.itemSplitMode = mode;
+        render();
+      }
       else if (action === 'save-expense') {
         const description = document.getElementById('exp-desc').value.trim();
         const amount = parseAmount(document.getElementById('exp-amount').value);
@@ -1546,7 +1677,7 @@ function attachHandlers() {
         if (!description) { showToast('Contá qué fue el gasto.'); return; }
         if (!(amount > 0)) { showToast('Pon un importe mayor que 0.'); return; }
         let shares = null;
-        if (state.splitMode === 'custom') {
+        if (paid_by !== 'split' && state.splitMode === 'custom') {
           shares = {};
           Object.keys(state.customShares).forEach(k => { shares[k] = Number(state.customShares[k]) || 0; });
           const sum = Object.values(shares).reduce((a, b) => a + b, 0);
@@ -1567,6 +1698,7 @@ function attachHandlers() {
           const { data: itemData, error: itemErr } = await sb.from('items').insert({
             user_id: state.session.user.id, name: description, amount, due_date, recurrence, anchor_day,
             kind: 'pago', notify_whatsapp: false, notify_mail: true, shared_partner_id: state.activePartnerId,
+            shared_paid_by: paid_by, split_type: shares ? 'custom' : 'equal', shares,
             paid: recurrence === 'no', paid_on: recurrence === 'no' ? expense_date : null
           }).select();
           if (itemErr) { el.disabled = false; showToast('No se pudo trasladar a Gastos: ' + itemErr.message); return; }
@@ -1690,7 +1822,7 @@ function attachHandlers() {
       }
       else if (action === 'sign-out') {
         await sb.auth.signOut();
-        state.session = null; state.items = []; state.notice = ''; state.entries = []; state.entriesLoaded = false; state.entriesError = ''; state.entryModal = null; state.viewMonth = currentYm(); state.partners = []; state.sharedExpenses = []; state.partnersLoaded = false; state.activePartnerId = null; state.partnerModal = false; state.expenseModal = null; state.personModal = false; state.sharedParticipants = []; state.splitMode = 'equal'; state.customShares = {}; state.screen = 'plan'; render();
+        state.session = null; state.items = []; state.notice = ''; state.entries = []; state.entriesLoaded = false; state.entriesError = ''; state.entryModal = null; state.viewMonth = currentYm(); state.partners = []; state.sharedExpenses = []; state.partnersLoaded = false; state.activePartnerId = null; state.partnerModal = false; state.expenseModal = null; state.personModal = false; state.sharedParticipants = []; state.splitMode = 'equal'; state.customShares = {}; state.itemSharedId = ''; state.itemPaidBy = 'yo'; state.itemSplitMode = 'equal'; state.itemShares = {}; state.screen = 'plan'; render();
       }
       else if (action === 'do-signup') {
         const email = document.getElementById('auth-email').value.trim();
@@ -1721,7 +1853,9 @@ function attachHandlers() {
       else if (action === 'save-channels') {
         const phone = document.getElementById('channels-phone').value.trim();
         state.busy = true; render();
-        const { error } = await sb.from('profiles').upsert({ id: state.session.user.id, phone: phone || null });
+        const plan = state.chosenPlan === 'trial' ? 'trial' : 'free';
+        const trial_ends_at = plan === 'trial' ? toDateStr(addDays(today, 15)) : null;
+        const { error } = await sb.from('profiles').upsert({ id: state.session.user.id, phone: phone || null, plan, trial_ends_at });
         state.busy = false;
         if (error) { showToast('No se pudo guardar el teléfono: ' + error.message); }
         state.screen = 'app'; render();
@@ -1741,7 +1875,9 @@ function attachHandlers() {
               user_id: state.session.user.id, name: item.name, amount: item.amount, due_date: toDateStr(n),
               recurrence: item.recurrence, notify_whatsapp: item.notify_whatsapp, notify_mail: item.notify_mail,
               kind: item.kind || 'pago', renewed_from: item.id,
-              anchor_day: item.anchor_day || parseInt(item.due_date.slice(8, 10), 10)
+              anchor_day: item.anchor_day || parseInt(item.due_date.slice(8, 10), 10),
+              shared_partner_id: item.shared_partner_id || null, shared_paid_by: item.shared_paid_by || null,
+              split_type: item.split_type || 'equal', shares: item.shares || null
             });
             if (e2) showToast('Se marcó, pero no se pudo crear la próxima fecha: ' + e2.message);
           }
@@ -1751,7 +1887,8 @@ function attachHandlers() {
           if (item.amount > 0) {
             const { error: e3 } = await sb.from('shared_expenses').insert({
               user_id: state.session.user.id, partner_id: item.shared_partner_id,
-              description: item.name, amount: item.amount, paid_by: 'yo',
+              description: item.name, amount: item.amount, paid_by: item.shared_paid_by || 'yo',
+              shares: item.split_type === 'custom' ? item.shares : null,
               expense_date: toDateStr(today), from_item_id: item.id
             });
             if (e3) showToast('Se marcó como pagado, pero no se pudo anotar en compartido: ' + e3.message);
@@ -1788,15 +1925,28 @@ function attachHandlers() {
         const anchor_day = recurrence !== 'no' ? parseInt(dateVal.slice(8, 10), 10) : null;
         const sharedEl = document.getElementById('new-shared');
         const shared_partner_id = sharedEl && sharedEl.value ? sharedEl.value : null;
+        let shared_paid_by = null, split_type = 'equal', shares = null;
+        if (shared_partner_id) {
+          shared_paid_by = state.itemPaidBy || 'yo';
+          if (shared_paid_by !== 'split' && state.itemSplitMode === 'custom') {
+            split_type = 'custom';
+            shares = {};
+            Object.keys(state.itemShares).forEach(k => { shares[k] = Number(state.itemShares[k]) || 0; });
+            const sum = Object.values(shares).reduce((a, b) => a + b, 0);
+            if (Math.abs(sum - 100) > 0.5) { showToast('Los porcentajes tienen que sumar 100 (suman ' + fmtMoney(sum) + ').'); return; }
+          }
+        }
         state.busy = true; render();
         let error;
         if (state.editingItem) {
           ({ error } = await sb.from('items').update({
-            name, amount, due_date: dateVal, due_time, recurrence, notify_whatsapp, notify_mail, anchor_day, shared_partner_id
+            name, amount, due_date: dateVal, due_time, recurrence, notify_whatsapp, notify_mail, anchor_day,
+            shared_partner_id, shared_paid_by, split_type, shares
           }).eq('id', state.editingItem.id));
         } else {
           ({ error } = await sb.from('items').insert({
-            user_id: state.session.user.id, name, amount, due_date: dateVal, due_time, recurrence, notify_whatsapp, notify_mail, kind: state.modalKind, anchor_day, shared_partner_id
+            user_id: state.session.user.id, name, amount, due_date: dateVal, due_time, recurrence, notify_whatsapp, notify_mail, kind: state.modalKind, anchor_day,
+            shared_partner_id, shared_paid_by, split_type, shares
           }));
         }
         state.busy = false;
