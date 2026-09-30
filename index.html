@@ -650,7 +650,7 @@ function renderPlan() {
     <div class="card" style="border:2px solid ${chosen === 'trial' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;" data-action="pick-plan" data-plan="trial">
       <h2 class="title">Premium</h2>
       <p class="sub">15 días gratis, después sigues si quieres.</p>
-      <div class="price-row"><span class="amount">4 €</span><span class="period">por mes</span></div>
+      <div class="price-row"><span class="amount">4,99 €</span><span class="period">por mes</span></div>
       <ul class="feat">
         <li><span class="dot"></span>Todo lo del plan Gratis</li>
         <li><span class="dot"></span>Gastos compartidos, con quien quieras</li>
@@ -1822,7 +1822,7 @@ function attachHandlers() {
       }
       else if (action === 'sign-out') {
         await sb.auth.signOut();
-        state.session = null; state.items = []; state.notice = ''; state.entries = []; state.entriesLoaded = false; state.entriesError = ''; state.entryModal = null; state.viewMonth = currentYm(); state.partners = []; state.sharedExpenses = []; state.partnersLoaded = false; state.activePartnerId = null; state.partnerModal = false; state.expenseModal = null; state.personModal = false; state.sharedParticipants = []; state.splitMode = 'equal'; state.customShares = {}; state.itemSharedId = ''; state.itemPaidBy = 'yo'; state.itemSplitMode = 'equal'; state.itemShares = {}; state.screen = 'plan'; render();
+        state.session = null; state.items = []; state.notice = ''; state.entries = []; state.entriesLoaded = false; state.entriesError = ''; state.entryModal = null; state.viewMonth = currentYm(); state.partners = []; state.sharedExpenses = []; state.partnersLoaded = false; state.activePartnerId = null; state.partnerModal = false; state.expenseModal = null; state.personModal = false; state.sharedParticipants = []; state.splitMode = 'equal'; state.customShares = {}; state.itemSharedId = ''; state.itemPaidBy = 'yo'; state.itemSplitMode = 'equal'; state.itemShares = {}; state.profile = { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null }; state.screen = 'plan'; render();
       }
       else if (action === 'do-signup') {
         const email = document.getElementById('auth-email').value.trim();
@@ -1848,6 +1848,7 @@ function attachHandlers() {
         state.busy = false;
         if (error) { state.authError = error.message; render(); return; }
         state.session = data.session; state.screen = 'app'; render();
+        await loadProfile();
         await loadItems();
       }
       else if (action === 'save-channels') {
