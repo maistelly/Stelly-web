@@ -1497,7 +1497,7 @@ function renderModal() {
           <option value="anio" ${recurrenceVal==='anio'?'selected':''}>Cada año</option>
         </select>
       </div>
-      ${!isTask && state.partners.length ? `
+      ${!isTask && hasPremium() && state.partners.length ? `
       <div class="field">
         <label class="field-label">¿Lo compartís con alguien?</label>
         <select id="new-shared" onchange="state.itemSharedId = this.value; if (this.value) { const pp = participantsOf(this.value); const base = Math.floor(1000 / (pp.length + 1)) / 10; state.itemShares = { yo: base + (100 - base * (pp.length + 1)) }; pp.forEach(p => { state.itemShares[p.name] = base; }); } state.itemSplitMode = 'equal'; render();">
