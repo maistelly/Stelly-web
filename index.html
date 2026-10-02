@@ -446,6 +446,7 @@ const TEMPLATE_PACKS = {
     ]},
 };
 const RECURRENCE_LABEL = { mes: 'cada mes', trimestre: 'cada trimestre', anio: 'cada año' };
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/aFa4grfDufrAcqBg9W33W01';
 
 let state = {
   screen: 'loading', // loading, plan, auth, channels, app
@@ -737,6 +738,17 @@ function renderProfile() {
       <button class="btn-primary" data-action="save-profile" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Guardando…' : 'Guardar cambios'}</button>
     </div>
 
+    <div class="card" style="margin-bottom:16px;">
+      <p class="modal-title" style="margin-bottom:4px;">Tu plan</p>
+      ${state.profile.plan === 'paid'
+        ? `<p class="sub" style="margin:0;">Premium. Gracias por bancar Stelly 🌼</p>`
+        : state.profile.plan === 'trial' && hasPremium()
+        ? `<p class="sub" style="margin:0 0 12px;">Premium, en período de prueba. Te quedan ${trialDaysLeft()} días.</p>
+           <a class="signout-link" style="display:block;text-align:center;" href="${STRIPE_PAYMENT_LINK}" target="_blank" rel="noopener">Suscribirme ahora, sin esperar a que termine</a>`
+        : `<p class="sub" style="margin:0 0 12px;">Gratis. Gastos compartidos y Cuentas son parte de Premium.</p>
+           <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${STRIPE_PAYMENT_LINK}" target="_blank" rel="noopener">Suscribirme por 4,99 €/mes</a>`}
+    </div>
+
     <div class="card">
       <p class="modal-title" style="margin-bottom:4px;">Cambiar contraseña</p>
       <p class="sub" style="margin-bottom:16px;">Deja estos campos vacíos si no quieres cambiarla.</p>
@@ -780,9 +792,12 @@ function renderUpsell(feature) {
   return `<div class="card">
     <p class="modal-title" style="margin-bottom:4px;">${feature} es parte del plan Premium</p>
     ${trialVencido
-      ? `<p class="sub" style="margin-bottom:14px;">Tu prueba de 15 días ya terminó. Cuando el cobro esté activo, vas a poder seguir usándolo.</p>`
+      ? `<p class="sub" style="margin-bottom:14px;">Tu prueba de 15 días ya terminó. Suscribite para seguir usándolo.</p>
+         <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${STRIPE_PAYMENT_LINK}" target="_blank" rel="noopener">Suscribirme por 4,99 €/mes</a>
+         <p class="sub" style="margin:10px 0 0;font-size:12px;">Te lleva a la página de pago de Stripe. Una vez que pagues, avisanos para activarte el plan: puede tardar un rato en reflejarse.</p>`
       : `<p class="sub" style="margin-bottom:14px;">Pruébalo gratis 15 días, sin tarjeta. Después sigues si quieres.</p>
-         <button class="btn-primary" data-action="start-trial">Empezar prueba gratis</button>`}
+         <button class="btn-primary" data-action="start-trial">Empezar prueba gratis</button>
+         <a class="signout-link" style="display:block;text-align:center;margin-top:10px;" href="${STRIPE_PAYMENT_LINK}" target="_blank" rel="noopener">O suscribirme directo, sin prueba</a>`}
   </div>`;
 }
 
