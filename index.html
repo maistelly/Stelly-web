@@ -485,7 +485,7 @@ let state = {
   busy: false,
   authError: '',
   confirmMsg: '',
-  profile: { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null },
+  profile: { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null, premium_until: null, cancel_at_period_end: false, in_trial: false },
   profileMsg: '',
   profileError: '',
   section: 'pagos', // pagos, recordatorios
@@ -605,7 +605,7 @@ async function handleAvatarChange(e) {
 async function loadProfile() {
   const { data, error } = await sb.from('profiles').select('*').eq('id', state.session.user.id).maybeSingle();
   if (!error && data) {
-    state.profile = { phone: data.phone || '', avatar_url: data.avatar_url || '', plan: data.plan || 'free', trial_ends_at: data.trial_ends_at || null };
+    state.profile = { phone: data.phone || '', avatar_url: data.avatar_url || '', plan: data.plan || 'free', trial_ends_at: data.trial_ends_at || null, premium_until: data.premium_until || null, cancel_at_period_end: !!data.cancel_at_period_end, in_trial: !!data.in_trial };
   }
   render();
 }
@@ -621,6 +621,21 @@ function trialDaysLeft() {
   if (!state.profile.trial_ends_at) return 0;
   return Math.max(0, daysBetween(today, new Date(state.profile.trial_ends_at + 'T00:00:00')));
 }
+
+// Datos de la suscripción de Stripe: cuántos días quedan, si está cancelada, si es prueba
+function subInfo() {
+  const p = state.profile;
+  if (p.plan !== 'paid') return null;
+  const end = p.premium_until ? new Date(p.premium_until) : null;
+  const days = end ? Math.max(0, Math.ceil((end.getTime() - Date.now()) / 86400000)) : null;
+  return {
+    end, days,
+    endTxt: end ? end.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' }) : '',
+    cancelled: !!p.cancel_at_period_end,
+    trial: !!p.in_trial
+  };
+}
+function diasTxt(n) { return n === 1 ? '1 día' : n + ' días'; }
 
 async function init() {
   const { data: { session } } = await sb.auth.getSession();
@@ -765,8 +780,30 @@ function renderProfile() {
     <div class="card" style="margin-bottom:16px;">
       <p class="modal-title" style="margin-bottom:4px;">Tu plan</p>
       ${state.profile.plan === 'paid'
-        ? `<p class="sub" style="margin:0 0 ${STRIPE_PORTAL_LINK ? '12px' : '0'};">Premium. Gracias por apoyar Stelly 🌼</p>
-           ${STRIPE_PORTAL_LINK ? `<a class="signout-link" style="display:block;text-align:center;" href="${esc(portalUrl())}">Gestionar o cancelar la suscripción</a>` : ''}`
+        ? (() => {
+            const si = subInfo();
+            const portal = STRIPE_PORTAL_LINK ? esc(portalUrl()) : '';
+            if (si.cancelled && si.end) {
+              return `<div style="background:var(--danger-bg);color:var(--danger-ink);border-radius:14px;padding:16px;text-align:center;">
+                  <div style="font-size:40px;font-weight:700;line-height:1;">${si.days}</div>
+                  <div style="font-weight:600;margin-top:2px;">${si.days === 1 ? 'día' : 'días'} de Premium</div>
+                </div>
+                <p class="sub" style="margin:12px 0 4px;"><b>Has cancelado tu suscripción.</b> No se te cobrará nada.</p>
+                <p class="sub" style="margin:0 0 12px;">Puedes usar Premium hasta el ${si.endTxt}. Cuando termine pasarás al plan Gratis y no podrás usar Gastos compartidos ni Cuentas. Tus datos se quedan guardados.</p>
+                ${portal ? `<a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${portal}">Reactivar mi suscripción</a>` : ''}`;
+            }
+            if (si.trial && si.end) {
+              return `<div style="background:var(--green-bg);color:var(--green-ink);border-radius:14px;padding:16px;text-align:center;">
+                  <div style="font-size:40px;font-weight:700;line-height:1;">${si.days}</div>
+                  <div style="font-weight:600;margin-top:2px;">${si.days === 1 ? 'día' : 'días'} de prueba gratis</div>
+                </div>
+                <p class="sub" style="margin:12px 0 12px;">El ${si.endTxt} se cobrarán 4,99 € al mes, salvo que canceles antes.</p>
+                ${portal ? `<a class="signout-link" style="display:block;text-align:center;" href="${portal}">Gestionar o cancelar la suscripción</a>` : ''}`;
+            }
+            return `<p class="sub" style="margin:0 0 4px;">Premium. Gracias por apoyar Stelly 🌼</p>
+                ${si.end ? `<p class="sub" style="margin:0 0 12px;">Se renueva el ${si.endTxt}.</p>` : '<div style="height:8px"></div>'}
+                ${portal ? `<a class="signout-link" style="display:block;text-align:center;" href="${portal}">Gestionar o cancelar la suscripción</a>` : ''}`;
+          })()
         : state.profile.plan === 'trial' && hasPremium()
         ? `<p class="sub" style="margin:0 0 12px;">Premium, en período de prueba. Te quedan ${trialDaysLeft()} días.</p>
            <a class="signout-link" style="display:block;text-align:center;" href="${esc(checkoutUrl())}">Suscribirme ahora, sin esperar a que termine</a>`
@@ -799,6 +836,7 @@ function renderTopBar() {
       <span class="brand-name"><svg class="jasmine-icon jasmine-icon-sm" viewBox="0 0 40 40" aria-hidden="true"><g><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(72 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(144 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(216 20 20)"/><ellipse cx="20" cy="10" rx="6.5" ry="9" fill="#FFFDF7" stroke="#B99B5B" stroke-width="1.3" transform="rotate(288 20 20)"/><circle cx="20" cy="20" r="4.2" fill="#E8C767" stroke="#B99B5B" stroke-width="0.6"/></g></svg>STELLY</span>
       <div style="display:flex;align-items:center;gap:14px;">
         ${state.profile.plan === 'trial' && hasPremium() ? `<span class="sub" style="margin:0;">${trialDaysLeft()} días de prueba</span>` : ''}
+        ${(() => { const si = subInfo(); return si && si.end && (si.cancelled || si.trial) ? `<button class="signout-link" data-action="go-profile" style="font-weight:700;">${si.cancelled ? 'Premium termina en ' : 'Prueba: '}${diasTxt(si.days)}</button>` : ''; })()}
         <button class="signout-link" data-action="go-profile">Mi perfil</button>
         <button class="signout-link" data-action="sign-out">Cerrar sesión</button>
       </div>
@@ -811,6 +849,7 @@ function renderTopBar() {
       <button class="${s === 'recordatorios' ? 'active' : ''}" data-action="section-recordatorios">Recordatorios</button>
     </div>
     ${renderMonthBar()}
+    ${(() => { const si = subInfo(); return si && si.cancelled && si.end ? `<p class="sub" data-action="go-profile" style="cursor:pointer;color:var(--danger-ink);background:var(--danger-bg);padding:10px 12px;border-radius:10px;">Has cancelado Premium. Te quedan <b>${diasTxt(si.days)}</b> (hasta el ${si.endTxt}); después pasarás al plan Gratis.</p>` : ''; })()}
     ${state.notice ? `<p class="sub" style="color:var(--green-ink);background:var(--green-bg);padding:10px 12px;border-radius:10px;">${state.notice}</p>` : ''}`;
 }
 
