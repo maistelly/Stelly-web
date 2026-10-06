@@ -447,13 +447,18 @@ const TEMPLATE_PACKS = {
 };
 const RECURRENCE_LABEL = { mes: 'cada mes', trimestre: 'cada trimestre', anio: 'cada año' };
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/6oU5kvgHyenwduF5vi33W02'; // Premium: 15 días de prueba, con tarjeta
-const STRIPE_PORTAL_LINK = ''; // Portal del cliente de Stripe (para cancelar). Pegar aquí su URL cuando esté activado.
+const STRIPE_PORTAL_LINK = 'https://billing.stripe.com/p/login/8x2cMX4YQa7gbmxbTG33W00'; // Portal del cliente de Stripe: aquí cada persona cancela o cambia su tarjeta
 
 // Enlace de pago con la persona identificada, para que Stripe avise de QUIÉN pagó (client_reference_id)
 function checkoutUrl() {
   const u = state.session && state.session.user;
   if (!u) return STRIPE_PAYMENT_LINK;
   return STRIPE_PAYMENT_LINK + '?client_reference_id=' + encodeURIComponent(u.id) + '&prefilled_email=' + encodeURIComponent(u.email || '');
+}
+// Enlace al portal de Stripe, con el mail ya escrito
+function portalUrl() {
+  const u = state.session && state.session.user;
+  return u && u.email ? STRIPE_PORTAL_LINK + '?prefilled_email=' + encodeURIComponent(u.email) : STRIPE_PORTAL_LINK;
 }
 // Recuerda (en este navegador) que la persona eligió Premium al registrarse, por si antes tiene que confirmar el mail
 function getPendingChoice() { try { return localStorage.getItem('stelly_plan_choice'); } catch (e) { return null; } }
@@ -657,7 +662,6 @@ function renderPlan() {
   return `
   <div class="wrap">
     ${BRAND_H1}
-    ${stepsHtml(1)}
     <div class="card" style="border:2px solid ${chosen === 'free' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;margin-bottom:12px;" data-action="pick-plan" data-plan="free">
       <h2 class="title">Gratis</h2>
       <p class="sub">Organiza tus gastos y no te olvides de nada.</p>
@@ -681,7 +685,8 @@ function renderPlan() {
       </ul>
     </div>
     <p class="sub" style="margin:14px 0 16px;">Premium pide la tarjeta al empezar. Si no cancelas antes de que terminen los 15 días, se cobran 4,99 € al mes de forma automática. Con el plan Gratis no pagas nada.</p>
-    <button class="btn-primary" data-action="go-auth">Continuar${chosen === 'premium' ? ' con Premium' : ' gratis'}</button>
+    <button class="btn-primary" data-action="go-signup">Crear cuenta${chosen === 'premium' ? ' con Premium' : ' gratis'}</button>
+    <p class="sub" style="text-align:center;margin:18px 0 0;">¿Ya tienes cuenta? <a href="#" data-action="go-signin" style="color:var(--accent);font-weight:600;">Inicia sesión</a></p>
   </div>`;
 }
 
@@ -690,7 +695,6 @@ function renderAuth() {
   return `
   <div class="wrap">
     ${BRAND_H1}
-    ${stepsHtml(2)}
     <div class="card">
       <div class="auth-tabs">
         <button class="${isSignup ? 'active' : ''}" data-action="auth-mode-signup">Crear cuenta</button>
@@ -712,10 +716,9 @@ function renderChannels() {
   return `
   <div class="wrap">
     ${BRAND_H1}
-    ${stepsHtml(3)}
     <div class="card">
       <h2 class="title">¿Cómo quieres que te avisemos?</h2>
-      <p class="sub">Podés agregar tu número ahora o más adelante desde la app</p>
+      <p class="sub">Puedes añadir tu número ahora o más adelante desde la app</p>
       <div class="field"><label class="field-label">Tu número (para WhatsApp, opcional)</label><input id="channels-phone" type="tel" placeholder="+34 600 000 000"></div>
       <button class="btn-primary" data-action="save-channels" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Un momento…' : 'Empezar a usar Stelly'}</button>
     </div>
@@ -763,7 +766,7 @@ function renderProfile() {
       <p class="modal-title" style="margin-bottom:4px;">Tu plan</p>
       ${state.profile.plan === 'paid'
         ? `<p class="sub" style="margin:0 0 ${STRIPE_PORTAL_LINK ? '12px' : '0'};">Premium. Gracias por apoyar Stelly 🌼</p>
-           ${STRIPE_PORTAL_LINK ? `<a class="signout-link" style="display:block;text-align:center;" href="${esc(STRIPE_PORTAL_LINK)}">Gestionar o cancelar la suscripción</a>` : ''}`
+           ${STRIPE_PORTAL_LINK ? `<a class="signout-link" style="display:block;text-align:center;" href="${esc(portalUrl())}">Gestionar o cancelar la suscripción</a>` : ''}`
         : state.profile.plan === 'trial' && hasPremium()
         ? `<p class="sub" style="margin:0 0 12px;">Premium, en período de prueba. Te quedan ${trialDaysLeft()} días.</p>
            <a class="signout-link" style="display:block;text-align:center;" href="${esc(checkoutUrl())}">Suscribirme ahora, sin esperar a que termine</a>`
@@ -949,7 +952,7 @@ function renderSharedScreen() {
     </div>
 
     <div class="item-list">
-      ${!people.length ? `<div class="empty-state"><p>Agregá a alguien primero para poder cargar un gasto.</p></div>`
+      ${!people.length ? `<div class="empty-state"><p>Añade primero a alguien para poder cargar un gasto.</p></div>`
         : rows.length ? rows.map(ex => {
         const payer = people.find(x => x.name === ex.paid_by);
         const quien = ex.paid_by === 'split' ? 'Pago directo' : (ex.paid_by === 'yo' ? 'Pagaste tú' : `Pagó ${esc(ex.paid_by)}`);
@@ -1581,6 +1584,7 @@ function attachHandlers() {
   document.querySelectorAll('[data-action]').forEach(el => {
     el.addEventListener('click', async (e) => {
       const action = el.getAttribute('data-action');
+      if (el.tagName === 'A' && el.getAttribute('href') === '#') e.preventDefault();
 
       if (action === 'go-plan') { state.screen = 'plan'; render(); }
       else if (action === 'pick-plan') { state.chosenPlan = el.getAttribute('data-plan'); render(); }
@@ -1588,7 +1592,8 @@ function attachHandlers() {
         await loadProfile();
         showToast(hasPremium() ? 'Listo, ya tienes Premium 🌼' : 'Todavía no vemos el pago. Puede tardar unos segundos: inténtalo de nuevo en un momento.');
       }
-      else if (action === 'go-auth') { state.screen = 'auth'; render(); }
+      else if (action === 'go-signup') { state.authMode = 'signup'; state.authError=''; state.confirmMsg=''; state.screen = 'auth'; render(); }
+      else if (action === 'go-signin') { state.authMode = 'signin'; state.authError=''; state.confirmMsg=''; state.screen = 'auth'; render(); }
       else if (action === 'auth-mode-signup') { state.authMode = 'signup'; state.authError=''; state.confirmMsg=''; render(); }
       else if (action === 'auth-mode-signin') { state.authMode = 'signin'; state.authError=''; state.confirmMsg=''; render(); }
       else if (action === 'tab-proximos') { state.activeTab = 'proximos'; state.summaryFilter = null; render(); }
@@ -1710,7 +1715,7 @@ function attachHandlers() {
         const amount = parseAmount(document.getElementById('exp-amount').value);
         const expense_date = document.getElementById('exp-date').value || toDateStr(today);
         const paid_by = document.getElementById('exp-paidby').value;
-        if (!description) { showToast('Contá qué fue el gasto.'); return; }
+        if (!description) { showToast('Cuéntanos qué fue el gasto.'); return; }
         if (!(amount > 0)) { showToast('Pon un importe mayor que 0.'); return; }
         let shares = null;
         if (paid_by !== 'split' && state.splitMode === 'custom') {
