@@ -446,12 +446,31 @@ const TEMPLATE_PACKS = {
     ]},
 };
 const RECURRENCE_LABEL = { mes: 'cada mes', trimestre: 'cada trimestre', anio: 'cada año' };
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/aFa4grfDufrAcqBg9W33W01';
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/6oU5kvgHyenwduF5vi33W02'; // Premium: 15 días de prueba, con tarjeta
+const STRIPE_PORTAL_LINK = ''; // Portal del cliente de Stripe (para cancelar). Pegar aquí su URL cuando esté activado.
+
+// Enlace de pago con la persona identificada, para que Stripe avise de QUIÉN pagó (client_reference_id)
+function checkoutUrl() {
+  const u = state.session && state.session.user;
+  if (!u) return STRIPE_PAYMENT_LINK;
+  return STRIPE_PAYMENT_LINK + '?client_reference_id=' + encodeURIComponent(u.id) + '&prefilled_email=' + encodeURIComponent(u.email || '');
+}
+// Recuerda (en este navegador) que la persona eligió Premium al registrarse, por si antes tiene que confirmar el mail
+function getPendingChoice() { try { return localStorage.getItem('stelly_plan_choice'); } catch (e) { return null; } }
+function setPendingChoice(v) { try { if (v) localStorage.setItem('stelly_plan_choice', v); else localStorage.removeItem('stelly_plan_choice'); } catch (e) {} }
+function maybeStartCheckout() {
+  if (getPendingChoice() === 'premium' && state.session && state.profile.plan !== 'paid') {
+    setPendingChoice(null);
+    window.location.href = checkoutUrl();
+    return true;
+  }
+  return false;
+}
 
 let state = {
   screen: 'loading', // loading, plan, auth, channels, app
   authMode: 'signup',
-  chosenPlan: 'trial', // 'free' o 'trial', el que se elige en la pantalla del plan
+  chosenPlan: 'premium', // 'free' o 'premium', el que se elige en la pantalla del plan
   session: null,
   items: [],
   activeTab: 'proximos',
@@ -605,6 +624,7 @@ async function init() {
     state.screen = 'app';
     render();
     await loadProfile();
+    if (maybeStartCheckout()) return;
     await loadItems();
   } else {
     state.screen = 'plan';
@@ -648,19 +668,20 @@ function renderPlan() {
         <li><span class="dot"></span>Sin Gastos compartidos ni Cuentas</li>
       </ul>
     </div>
-    <div class="card" style="border:2px solid ${chosen === 'trial' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;" data-action="pick-plan" data-plan="trial">
+    <div class="card" style="border:2px solid ${chosen === 'premium' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;" data-action="pick-plan" data-plan="premium">
       <h2 class="title">Premium</h2>
-      <p class="sub">15 días gratis, después sigues si quieres.</p>
+      <p class="sub">15 días gratis y después 4,99 € al mes, hasta que canceles.</p>
       <div class="price-row"><span class="amount">4,99 €</span><span class="period">por mes</span></div>
       <ul class="feat">
         <li><span class="dot"></span>Todo lo del plan Gratis</li>
         <li><span class="dot"></span>Gastos compartidos, con quien quieras</li>
         <li><span class="dot"></span>Cuentas: ingresos, gastos y ahorro del mes</li>
+        <li><span class="dot"></span>Tarjeta al empezar: no se cobra nada durante los 15 días</li>
         <li><span class="dot"></span>Cancelas cuando quieras, sin permanencia</li>
       </ul>
     </div>
-    <p class="sub" style="margin:14px 0 16px;">El cobro todavía no está activado mientras probamos. Elijas el que elijas, por ahora es gratis mientras validamos la idea.</p>
-    <button class="btn-primary" data-action="go-auth">Continuar${chosen === 'trial' ? ' con los 15 días gratis' : ' gratis'}</button>
+    <p class="sub" style="margin:14px 0 16px;">Premium pide la tarjeta al empezar. Si no cancelas antes de que terminen los 15 días, se cobran 4,99 € al mes de forma automática. Con el plan Gratis no pagas nada.</p>
+    <button class="btn-primary" data-action="go-auth">Continuar${chosen === 'premium' ? ' con Premium' : ' gratis'}</button>
   </div>`;
 }
 
@@ -741,12 +762,15 @@ function renderProfile() {
     <div class="card" style="margin-bottom:16px;">
       <p class="modal-title" style="margin-bottom:4px;">Tu plan</p>
       ${state.profile.plan === 'paid'
-        ? `<p class="sub" style="margin:0;">Premium. Gracias por bancar Stelly 🌼</p>`
+        ? `<p class="sub" style="margin:0 0 ${STRIPE_PORTAL_LINK ? '12px' : '0'};">Premium. Gracias por apoyar Stelly 🌼</p>
+           ${STRIPE_PORTAL_LINK ? `<a class="signout-link" style="display:block;text-align:center;" href="${esc(STRIPE_PORTAL_LINK)}">Gestionar o cancelar la suscripción</a>` : ''}`
         : state.profile.plan === 'trial' && hasPremium()
         ? `<p class="sub" style="margin:0 0 12px;">Premium, en período de prueba. Te quedan ${trialDaysLeft()} días.</p>
-           <a class="signout-link" style="display:block;text-align:center;" href="${STRIPE_PAYMENT_LINK}">Suscribirme ahora, sin esperar a que termine</a>`
+           <a class="signout-link" style="display:block;text-align:center;" href="${esc(checkoutUrl())}">Suscribirme ahora, sin esperar a que termine</a>`
         : `<p class="sub" style="margin:0 0 12px;">Gratis. Gastos compartidos y Cuentas son parte de Premium.</p>
-           <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${STRIPE_PAYMENT_LINK}">Suscribirme por 4,99 €/mes</a>`}
+           <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Probar 15 días gratis</a>
+           <p class="sub" style="margin:10px 0 0;font-size:12px;">Se pide la tarjeta al empezar y no se cobra nada durante los 15 días. Si no cancelas antes, después son 4,99 € al mes.</p>
+           <button class="signout-link" style="display:block;margin:10px auto 0;" data-action="refresh-plan">¿Ya te has suscrito? Actualizar</button>`}
     </div>
 
     <div class="card">
@@ -792,12 +816,11 @@ function renderUpsell(feature) {
   return `<div class="card">
     <p class="modal-title" style="margin-bottom:4px;">${feature} es parte del plan Premium</p>
     ${trialVencido
-      ? `<p class="sub" style="margin-bottom:14px;">Tu prueba de 15 días ya terminó. Suscribite para seguir usándolo.</p>
-         <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${STRIPE_PAYMENT_LINK}">Suscribirme por 4,99 €/mes</a>
-         <p class="sub" style="margin:10px 0 0;font-size:12px;">Te lleva a la página de pago de Stripe. Una vez que pagues, avisanos para activarte el plan: puede tardar un rato en reflejarse.</p>`
-      : `<p class="sub" style="margin-bottom:14px;">Pruébalo gratis 15 días, sin tarjeta. Después sigues si quieres.</p>
-         <button class="btn-primary" data-action="start-trial">Empezar prueba gratis</button>
-         <a class="signout-link" style="display:block;text-align:center;margin-top:10px;" href="${STRIPE_PAYMENT_LINK}">O suscribirme directo, sin prueba</a>`}
+      ? `<p class="sub" style="margin-bottom:14px;">Tu prueba de 15 días ya terminó. Suscríbete para seguir usándolo.</p>
+         <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Suscribirme por 4,99 €/mes</a>`
+      : `<p class="sub" style="margin-bottom:14px;">Pruébalo 15 días gratis. Se pide la tarjeta al empezar y no se cobra nada durante esos 15 días; si no cancelas antes, después son 4,99 € al mes.</p>
+         <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Empezar los 15 días gratis</a>`}
+    <button class="signout-link" style="display:block;margin:12px auto 0;" data-action="refresh-plan">¿Ya te has suscrito? Actualizar</button>
   </div>`;
 }
 
@@ -1561,11 +1584,9 @@ function attachHandlers() {
 
       if (action === 'go-plan') { state.screen = 'plan'; render(); }
       else if (action === 'pick-plan') { state.chosenPlan = el.getAttribute('data-plan'); render(); }
-      else if (action === 'start-trial') {
-        const trial_ends_at = toDateStr(addDays(today, 15));
-        const { error } = await sb.from('profiles').upsert({ id: state.session.user.id, plan: 'trial', trial_ends_at });
-        if (error) { showToast('No se pudo activar la prueba: ' + error.message); return; }
+      else if (action === 'refresh-plan') {
         await loadProfile();
+        showToast(hasPremium() ? 'Listo, ya tienes Premium 🌼' : 'Todavía no vemos el pago. Puede tardar unos segundos: inténtalo de nuevo en un momento.');
       }
       else if (action === 'go-auth') { state.screen = 'auth'; render(); }
       else if (action === 'auth-mode-signup') { state.authMode = 'signup'; state.authError=''; state.confirmMsg=''; render(); }
@@ -1844,6 +1865,7 @@ function attachHandlers() {
         const password = document.getElementById('auth-password').value;
         if (!email || !password) { state.authError = 'Completa email y contraseña.'; render(); return; }
         state.busy = true; state.authError = ''; render();
+        setPendingChoice(state.chosenPlan === 'premium' ? 'premium' : null);
         const { data, error } = await sb.auth.signUp({ email, password });
         state.busy = false;
         if (error) { state.authError = error.message; render(); return; }
@@ -1864,16 +1886,17 @@ function attachHandlers() {
         if (error) { state.authError = error.message; render(); return; }
         state.session = data.session; state.screen = 'app'; render();
         await loadProfile();
+        if (maybeStartCheckout()) return;
         await loadItems();
       }
       else if (action === 'save-channels') {
         const phone = document.getElementById('channels-phone').value.trim();
         state.busy = true; render();
-        const plan = state.chosenPlan === 'trial' ? 'trial' : 'free';
-        const trial_ends_at = plan === 'trial' ? toDateStr(addDays(today, 15)) : null;
-        const { error } = await sb.from('profiles').upsert({ id: state.session.user.id, phone: phone || null, plan, trial_ends_at });
+        const { error } = await sb.from('profiles').upsert({ id: state.session.user.id, phone: phone || null });
         state.busy = false;
         if (error) { showToast('No se pudo guardar el teléfono: ' + error.message); }
+        await loadProfile();
+        if (maybeStartCheckout()) return; // eligió Premium: se la lleva a Stripe a poner la tarjeta
         state.screen = 'app'; render();
         await loadItems();
       }
