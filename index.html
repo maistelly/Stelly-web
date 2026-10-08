@@ -259,7 +259,15 @@
 <script>
 const SUPABASE_URL = 'https://kzquynnxjwieppeptvom.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_VvUAndvtmXDnmQrfyhIzKA_lBay7hTn';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
+// Al volver a la pestaña o a la app, se renueva la sesión por si el móvil la había dormido
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    try { sb.auth.startAutoRefresh(); sb.auth.getSession(); } catch (e) {}
+  }
+});
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const today = new Date(); today.setHours(0,0,0,0);
@@ -488,6 +496,9 @@ let state = {
   profile: { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null, premium_until: null, cancel_at_period_end: false, in_trial: false },
   profileMsg: '',
   profileError: '',
+  deleteOpen: false,
+  deleteError: '',
+  deleteBlocked: false,
   section: 'pagos', // pagos, recordatorios
   modalKind: 'pago',
   templatesOpen: false,
@@ -702,6 +713,7 @@ function renderPlan() {
     <p class="sub" style="margin:14px 0 16px;">Premium pide la tarjeta al empezar. Si no cancelas antes de que terminen los 15 días, se cobran 4,99 € al mes de forma automática. Con el plan Gratis no pagas nada.</p>
     <button class="btn-primary" data-action="go-signup">Crear cuenta${chosen === 'premium' ? ' con Premium' : ' gratis'}</button>
     <p class="sub" style="text-align:center;margin:18px 0 0;">¿Ya tienes cuenta? <a href="#" data-action="go-signin" style="color:var(--accent);font-weight:600;">Inicia sesión</a></p>
+    <p class="sub" style="text-align:center;margin:14px 0 0;font-size:12px;"><a href="/terminos.html" target="_blank" rel="noopener" style="color:var(--accent);">Términos</a> · <a href="/privacidad.html" target="_blank" rel="noopener" style="color:var(--accent);">Política de privacidad</a></p>
   </div>`;
 }
 
@@ -722,7 +734,9 @@ function renderAuth() {
       <div class="field"><label class="field-label">Email</label><input id="auth-email" type="email" placeholder="tu@email.com"></div>
       <div class="field"><label class="field-label">Contraseña</label><input id="auth-password" type="password" placeholder="********"></div>
       <button class="btn-primary" data-action="${isSignup ? 'do-signup' : 'do-signin'}" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Un momento…' : 'Continuar'}</button>
+      ${isSignup ? `<p class="sub" style="margin:12px 0 0;font-size:12px;text-align:center;">Al crear tu cuenta aceptas los <a href="/terminos.html" target="_blank" rel="noopener" style="color:var(--accent);">Términos y condiciones</a> y la <a href="/privacidad.html" target="_blank" rel="noopener" style="color:var(--accent);">Política de privacidad</a>.</p>` : ''}
     </div>
+    <p class="sub" style="text-align:center;margin:14px 0 0;font-size:12px;"><a href="/terminos.html" target="_blank" rel="noopener" style="color:var(--accent);">Términos</a> · <a href="/privacidad.html" target="_blank" rel="noopener" style="color:var(--accent);">Política de privacidad</a></p>
     <button class="btn-ghost" data-action="go-plan">← Volver</button>
   </div>`;
 }
@@ -825,6 +839,19 @@ function renderProfile() {
         <input id="profile-new-password-2" type="password" placeholder="********">
       </div>
       <button class="btn-primary" data-action="update-password" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Guardando…' : 'Actualizar contraseña'}</button>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <p class="modal-title" style="margin-bottom:4px;">Eliminar mi cuenta</p>
+      ${!state.deleteOpen
+        ? `<p class="sub" style="margin:0 0 12px;">Se borrarán tu cuenta y todos tus datos: gastos, recordatorios, cuentas y gastos compartidos. No se puede deshacer.</p>
+           <button class="signout-link" style="display:block;margin:0 auto;color:var(--danger-ink);" data-action="delete-account-open">Quiero eliminar mi cuenta</button>`
+        : `<p class="sub" style="margin:0 0 12px;"><b>Esta acción es definitiva.</b> Se borrarán tu cuenta y todos tus datos y no podremos recuperarlos.</p>
+           ${state.deleteBlocked ? `<p class="sub" style="color:var(--danger-ink);background:var(--danger-bg);padding:10px 12px;border-radius:10px;">Tienes una suscripción Premium activa y, si borras la cuenta ahora, se te seguiría cobrando. Cancélala primero y después vuelve aquí. ${STRIPE_PORTAL_LINK ? `<a href="${esc(portalUrl())}" style="color:var(--danger-ink);font-weight:600;">Cancelar la suscripción</a>` : ''}</p>` : ''}
+           ${state.deleteError ? `<p class="sub" style="color:var(--danger-ink);background:var(--danger-bg);padding:10px 12px;border-radius:10px;">${state.deleteError}</p>` : ''}
+           <div class="field"><label class="field-label">Escribe ELIMINAR para confirmar</label><input id="delete-confirm" type="text" placeholder="ELIMINAR" autocomplete="off"></div>
+           <button class="btn-primary" style="background:var(--danger-ink);color:#fff;" data-action="delete-account-confirm" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Eliminando…' : 'Eliminar mi cuenta para siempre'}</button>
+           <button class="signout-link" style="display:block;margin:12px auto 0;" data-action="delete-account-cancel">Mejor no</button>`}
     </div>
   </div>`;
 }
@@ -1619,6 +1646,37 @@ function renderModal() {
   </div>`;
 }
 
+function resetLocalState() {
+  state.session = null;
+  state.items = [];
+  state.notice = '';
+  state.entries = [];
+  state.entriesLoaded = false;
+  state.entriesError = '';
+  state.entryModal = null;
+  state.viewMonth = currentYm();
+  state.partners = [];
+  state.sharedExpenses = [];
+  state.partnersLoaded = false;
+  state.activePartnerId = null;
+  state.partnerModal = false;
+  state.expenseModal = null;
+  state.personModal = false;
+  state.sharedParticipants = [];
+  state.splitMode = 'equal';
+  state.customShares = {};
+  state.itemSharedId = '';
+  state.itemPaidBy = 'yo';
+  state.itemSplitMode = 'equal';
+  state.itemShares = {};
+  state.profile = { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null, premium_until: null, cancel_at_period_end: false, in_trial: false };
+  state.deleteOpen = false;
+  state.deleteError = '';
+  state.deleteBlocked = false;
+  state.screen = 'plan';
+  render();
+}
+
 function attachHandlers() {
   document.querySelectorAll('[data-action]').forEach(el => {
     el.addEventListener('click', async (e) => {
@@ -1902,7 +1960,26 @@ function attachHandlers() {
       }
       else if (action === 'sign-out') {
         await sb.auth.signOut();
-        state.session = null; state.items = []; state.notice = ''; state.entries = []; state.entriesLoaded = false; state.entriesError = ''; state.entryModal = null; state.viewMonth = currentYm(); state.partners = []; state.sharedExpenses = []; state.partnersLoaded = false; state.activePartnerId = null; state.partnerModal = false; state.expenseModal = null; state.personModal = false; state.sharedParticipants = []; state.splitMode = 'equal'; state.customShares = {}; state.itemSharedId = ''; state.itemPaidBy = 'yo'; state.itemSplitMode = 'equal'; state.itemShares = {}; state.profile = { phone: '', avatar_url: '', plan: 'free', trial_ends_at: null }; state.screen = 'plan'; render();
+        resetLocalState();
+      }
+      else if (action === 'delete-account-open') { state.deleteOpen = true; state.deleteError = ''; state.deleteBlocked = false; render(); }
+      else if (action === 'delete-account-cancel') { state.deleteOpen = false; state.deleteError = ''; state.deleteBlocked = false; render(); }
+      else if (action === 'delete-account-confirm') {
+        const typed = (document.getElementById('delete-confirm').value || '').trim().toUpperCase();
+        if (typed !== 'ELIMINAR') { state.deleteError = 'Escribe la palabra ELIMINAR para confirmar.'; state.deleteBlocked = false; render(); return; }
+        state.busy = true; state.deleteError = ''; state.deleteBlocked = false; render();
+        const { data, error } = await sb.functions.invoke('delete-account', { body: {} });
+        state.busy = false;
+        if (error) {
+          let detalle = '';
+          try { detalle = (await error.context.json()).error || ''; } catch (e) {}
+          if (detalle === 'suscripcion_activa') state.deleteBlocked = true;
+          else state.deleteError = 'No se pudo eliminar la cuenta. Inténtalo de nuevo y, si sigue fallando, escríbenos a equipo.stelly@gmail.com.';
+          render(); return;
+        }
+        try { await sb.auth.signOut(); } catch (e) {}
+        resetLocalState();
+        showToast('Tu cuenta se ha eliminado.');
       }
       else if (action === 'do-signup') {
         const email = document.getElementById('auth-email').value.trim();
