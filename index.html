@@ -454,7 +454,7 @@ const TEMPLATE_PACKS = {
     ]},
 };
 const RECURRENCE_LABEL = { mes: 'cada mes', trimestre: 'cada trimestre', anio: 'cada año' };
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/6oU5kvgHyenwduF5vi33W02'; // Premium: 15 días de prueba, con tarjeta
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/7sY6oz0IAa7gfCNbTG33W03'; // Premium: 15 días de prueba, con tarjeta
 const STRIPE_PORTAL_LINK = 'https://billing.stripe.com/p/login/8x2cMX4YQa7gbmxbTG33W00'; // Portal del cliente de Stripe: aquí cada persona cancela o cambia su tarjeta
 
 // Enlace de pago con la persona identificada, para que Stripe avise de QUIÉN pagó (client_reference_id)
@@ -700,8 +700,8 @@ function renderPlan() {
     </div>
     <div class="card" style="border:2px solid ${chosen === 'premium' ? 'var(--accent)' : 'var(--border)'};cursor:pointer;" data-action="pick-plan" data-plan="premium">
       <h2 class="title">Premium</h2>
-      <p class="sub">15 días gratis y después 4,99 € al mes, hasta que canceles.</p>
-      <div class="price-row"><span class="amount">4,99 €</span><span class="period">por mes</span></div>
+      <p class="sub">15 días gratis y después 5,99 € al mes, hasta que canceles.</p>
+      <div class="price-row"><span class="amount">5,99 €</span><span class="period">por mes</span></div>
       <ul class="feat">
         <li><span class="dot"></span>Todo lo del plan Gratis</li>
         <li><span class="dot"></span>Gastos compartidos, con quien quieras</li>
@@ -710,7 +710,7 @@ function renderPlan() {
         <li><span class="dot"></span>Cancelas cuando quieras, sin permanencia</li>
       </ul>
     </div>
-    <p class="sub" style="margin:14px 0 16px;">Premium pide la tarjeta al empezar. Si no cancelas antes de que terminen los 15 días, se cobran 4,99 € al mes de forma automática. Con el plan Gratis no pagas nada.</p>
+    <p class="sub" style="margin:14px 0 16px;">Premium pide la tarjeta al empezar. Si no cancelas antes de que terminen los 15 días, se cobran 5,99 € al mes de forma automática. Con el plan Gratis no pagas nada.</p>
     <button class="btn-primary" data-action="go-signup">Crear cuenta${chosen === 'premium' ? ' con Premium' : ' gratis'}</button>
     <p class="sub" style="text-align:center;margin:18px 0 0;">¿Ya tienes cuenta? <a href="#" data-action="go-signin" style="color:var(--accent);font-weight:600;">Inicia sesión</a></p>
     <p class="sub" style="text-align:center;margin:14px 0 0;font-size:12px;"><a href="/terminos.html" target="_blank" rel="noopener" style="color:var(--accent);">Términos</a> · <a href="/privacidad.html" target="_blank" rel="noopener" style="color:var(--accent);">Política de privacidad</a></p>
@@ -811,7 +811,7 @@ function renderProfile() {
                   <div style="font-size:40px;font-weight:700;line-height:1;">${si.days}</div>
                   <div style="font-weight:600;margin-top:2px;">${si.days === 1 ? 'día' : 'días'} de prueba gratis</div>
                 </div>
-                <p class="sub" style="margin:12px 0 12px;">El ${si.endTxt} se cobrarán 4,99 € al mes, salvo que canceles antes.</p>
+                <p class="sub" style="margin:12px 0 12px;">El ${si.endTxt} se cobrarán 5,99 € al mes, salvo que canceles antes.</p>
                 ${portal ? `<a class="signout-link" style="display:block;text-align:center;" href="${portal}">Gestionar o cancelar la suscripción</a>` : ''}`;
             }
             return `<p class="sub" style="margin:0 0 4px;">Premium. Gracias por apoyar Stelly 🌼</p>
@@ -823,7 +823,7 @@ function renderProfile() {
            <a class="signout-link" style="display:block;text-align:center;" href="${esc(checkoutUrl())}">Suscribirme ahora, sin esperar a que termine</a>`
         : `<p class="sub" style="margin:0 0 12px;">Gratis. Gastos compartidos y Cuentas son parte de Premium.</p>
            <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Probar 15 días gratis</a>
-           <p class="sub" style="margin:10px 0 0;font-size:12px;">Se pide la tarjeta al empezar y no se cobra nada durante los 15 días. Si no cancelas antes, después son 4,99 € al mes.</p>
+           <p class="sub" style="margin:10px 0 0;font-size:12px;">Se pide la tarjeta al empezar y no se cobra nada durante los 15 días. Si no cancelas antes, después son 5,99 € al mes.</p>
            <button class="signout-link" style="display:block;margin:10px auto 0;" data-action="refresh-plan">¿Ya te has suscrito? Actualizar</button>`}
     </div>
 
@@ -886,8 +886,8 @@ function renderUpsell(feature) {
     <p class="modal-title" style="margin-bottom:4px;">${feature} es parte del plan Premium</p>
     ${trialVencido
       ? `<p class="sub" style="margin-bottom:14px;">Tu prueba de 15 días ya terminó. Suscríbete para seguir usándolo.</p>
-         <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Suscribirme por 4,99 €/mes</a>`
-      : `<p class="sub" style="margin-bottom:14px;">Pruébalo 15 días gratis. Se pide la tarjeta al empezar y no se cobra nada durante esos 15 días; si no cancelas antes, después son 4,99 € al mes.</p>
+         <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Suscribirme por 5,99 €/mes</a>`
+      : `<p class="sub" style="margin-bottom:14px;">Pruébalo 15 días gratis. Se pide la tarjeta al empezar y no se cobra nada durante esos 15 días; si no cancelas antes, después son 5,99 € al mes.</p>
          <a class="btn-primary" style="display:block;text-align:center;text-decoration:none;" href="${esc(checkoutUrl())}">Empezar los 15 días gratis</a>`}
     <button class="signout-link" style="display:block;margin:12px auto 0;" data-action="refresh-plan">¿Ya te has suscrito? Actualizar</button>
   </div>`;
