@@ -1974,7 +1974,7 @@ function attachHandlers() {
           let detalle = '';
           try { detalle = (await error.context.json()).error || ''; } catch (e) {}
           if (detalle === 'suscripcion_activa') state.deleteBlocked = true;
-          else state.deleteError = 'No se pudo eliminar la cuenta. Inténtalo de nuevo y, si sigue fallando, escríbenos a equipo.stelly@gmail.com.';
+          else state.deleteError = 'No se pudo eliminar la cuenta. Inténtalo de nuevo y, si sigue fallando, escríbenos a soporte@stelly.es.';
           render(); return;
         }
         try { await sb.auth.signOut(); } catch (e) {}
