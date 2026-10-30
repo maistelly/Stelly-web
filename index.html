@@ -694,7 +694,7 @@ function renderPlan() {
       <div class="price-row"><span class="amount">0 €</span><span class="period">para siempre</span></div>
       <ul class="feat">
         <li><span class="dot"></span>Gastos ilimitados, con avisos por mail</li>
-        <li><span class="dot"></span>Recordatorios con hora</li>
+        <li><span class="dot"></span>Recordatorios de tareas</li>
         <li><span class="dot"></span>Sin Gastos compartidos ni Cuentas</li>
       </ul>
     </div>
@@ -747,8 +747,9 @@ function renderChannels() {
     ${BRAND_H1}
     <div class="card">
       <h2 class="title">¿Cómo quieres que te avisemos?</h2>
-      <p class="sub">Puedes añadir tu número ahora o más adelante desde la app</p>
+      <p class="sub">Los avisos por email llegan siempre. Si quieres también WhatsApp, añade tu número ahora o más adelante desde la app.</p>
       <div class="field"><label class="field-label">Tu número (para WhatsApp, opcional)</label><input id="channels-phone" type="tel" placeholder="+34 600 000 000"></div>
+      <p class="sub" style="margin:-6px 0 14px;font-size:12px;">Solo lo usamos para mandarte los avisos que tú actives por WhatsApp. En cada gasto o recordatorio eliges si quieres WhatsApp, y puedes desmarcarlo cuando quieras.</p>
       <button class="btn-primary" data-action="save-channels" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Un momento…' : 'Empezar a usar Stelly'}</button>
     </div>
   </div>`;
@@ -1581,7 +1582,7 @@ function renderModal() {
       <input type="number" min="0" max="100" step="1" value="${itemShares[key] != null ? itemShares[key] : ''}" oninput="state.itemShares['${key.replace(/'/g, "\\'")}'] = this.value;" onblur="render();">
       <span class="sub" style="width:14px;">%</span>
     </div>`;
-  const waChecked = isEdit ? it.notify_whatsapp : true;
+  const waChecked = isEdit ? it.notify_whatsapp : false; // WhatsApp solo si la persona lo marca
   const mailChecked = isEdit ? it.notify_mail : true;
   return `
   <div class="modal-backdrop" data-action="close-modal">
@@ -1595,6 +1596,7 @@ function renderModal() {
           : `<div class="field"><label class="field-label">Importe (opcional)</label><input id="new-amount" type="text" placeholder="9,99" value="${amountVal}"></div>
              <div class="field"><label class="field-label">Fecha</label><input id="new-date" type="date" value="${dateVal}"></div>`}
       </div>
+      <p class="sub" style="margin:-4px 0 12px;font-size:12px;">Te avisamos por la mañana, 3 días antes, 1 día antes y el mismo día.${isTask ? ' La hora que pongas aparece en el aviso.' : ''}</p>
       <div class="field">
         <label class="field-label">Se repite</label>
         <select id="new-recurrence">
@@ -1638,6 +1640,7 @@ function renderModal() {
           <p class="share-total ${itemSumOk ? 'ok' : 'bad'}">Suman ${fmtMoney(itemSum)}%${itemSumOk ? ' ✓' : ' — tiene que sumar 100%'}</p>
           <div style="height:8px;"></div>`}`}` : ''}` : ''}
       <label class="chan-option"><input type="checkbox" id="new-chk-wa" ${waChecked?'checked':''}> WhatsApp</label>
+      <p class="sub" style="margin:2px 0 10px;font-size:12px;">Al marcar WhatsApp aceptas recibir este aviso por WhatsApp en el número de tu perfil${state.profile.phone ? '' : ' (todavía no lo añadiste: ponlo en Mi perfil)'}. Puedes dejar de recibirlos cuando quieras desmarcando esta casilla.</p>
       <label class="chan-option"><input type="checkbox" id="new-chk-mail" ${mailChecked?'checked':''}> Mail</label>
       <div style="margin-top:14px;">
         <button class="btn-primary" data-action="save-item" ${state.busy ? 'disabled' : ''}>${state.busy ? 'Guardando…' : (isEdit ? 'Guardar cambios' : 'Guardar')}</button>
